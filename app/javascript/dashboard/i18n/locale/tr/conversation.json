@@ -366,11 +366,11 @@
     }
   },
   "ONBOARDING": {
-    "TITLE": "Merhaba 👋, {installationName}'a hoş geldiniz!",
+    "TITLE": "{installationName} paneline hoş geldiniz",
     "DESCRIPTION": "Üyeliğiniz için teşekkür ederiz. {installationName}'dan en iyi şekilde faydalanmanızı istiyoruz. Deneyimi daha keyifli hale getirmek için {installationName} içinde yapabileceğiniz birkaç şey var.",
-    "GREETING_MORNING": "👋 Günaydın {name}. {installationName} paneline hoş geldiniz.",
-    "GREETING_AFTERNOON": "👋 İyi günler {name}. {installationName} paneline hoş geldiniz.",
-    "GREETING_EVENING": "👋 İyi akşamlar {name}. {installationName} paneline hoş geldiniz.",
+    "GREETING_MORNING": "Günaydın {name}. {installationName} paneline hoş geldiniz.",
+    "GREETING_AFTERNOON": "İyi günler {name}. {installationName} paneline hoş geldiniz.",
+    "GREETING_EVENING": "İyi akşamlar {name}. {installationName} paneline hoş geldiniz.",
     "READ_LATEST_UPDATES": "En Son Güncellemeleri Okuyun",
     "ALL_CONVERSATION": {
       "TITLE": "Tüm Konuşmalarınız Bir Arada",

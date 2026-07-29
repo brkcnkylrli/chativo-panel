@@ -2,7 +2,7 @@
   "CHAT_LIST": {
     "LOADING": "Görüşmeler getiriliyor",
     "LOAD_MORE_CONVERSATIONS": "Daha fazla konuşma yükleyin",
-    "EOF": "Tüm görüşmeler yüklendi 🎉",
+    "EOF": "Tüm görüşmeler yüklendi",
     "LIST": {
       "404": "Bu grupta aktif görüşme yok."
     },

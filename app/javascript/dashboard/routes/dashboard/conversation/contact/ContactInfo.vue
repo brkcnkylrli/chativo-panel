@@ -112,7 +112,7 @@ export default {
     findCountryFlag(countryCode, cityAndCountry) {
       try {
         if (!countryCode) {
-          return `${cityAndCountry} 🌎`;
+          return cityAndCountry;
         }
 
         const code = countryCode?.toLowerCase();
@@ -243,7 +243,6 @@ export default {
             :href="contact.email ? `mailto:${contact.email}` : ''"
             :value="contact.email"
             icon="mail"
-            emoji="✉️"
             :title="$t('CONTACT_PANEL.EMAIL_ADDRESS')"
             show-copy
             editable
@@ -253,7 +252,6 @@ export default {
             :href="contact.phone_number ? `tel:${contact.phone_number}` : ''"
             :value="contact.phone_number"
             icon="call"
-            emoji="📞"
             :title="$t('CONTACT_PANEL.PHONE_NUMBER')"
             show-copy
             editable
@@ -263,13 +261,11 @@ export default {
             v-if="contact.identifier"
             :value="contact.identifier"
             icon="contact-identify"
-            emoji="🪪"
             :title="$t('CONTACT_PANEL.IDENTIFIER')"
           />
           <ContactInfoRow
             :value="additionalAttributes.company_name"
             icon="building-bank"
-            emoji="🏢"
             :title="$t('CONTACT_PANEL.COMPANY')"
             editable
             @update="
@@ -286,7 +282,6 @@ export default {
             v-if="location || additionalAttributes.location"
             :value="location || additionalAttributes.location"
             icon="map"
-            emoji="🌍"
             :title="$t('CONTACT_PANEL.LOCATION')"
           />
           <SocialIcons :social-profiles="socialProfiles" />

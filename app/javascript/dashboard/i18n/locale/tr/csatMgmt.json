@@ -3,11 +3,11 @@
     "TITLE": "Konuşmanızı oylayın",
     "PLACEHOLDER": "Biraz daha fazla bilgi verin...",
     "RATINGS": {
-      "POOR": "😞 Kötü",
-      "FAIR": "😑 Zayıf",
-      "AVERAGE": "😐 Ortalama",
-      "GOOD": "😀 İyi",
-      "EXCELLENT": "😍 Mükemmel"
+      "POOR": "Kötü",
+      "FAIR": "Zayıf",
+      "AVERAGE": "Ortalama",
+      "GOOD": "İyi",
+      "EXCELLENT": "Mükemmel"
     }
   }
 }

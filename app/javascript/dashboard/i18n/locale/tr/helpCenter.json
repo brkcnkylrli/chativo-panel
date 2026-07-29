@@ -211,7 +211,7 @@
             "BODY": "Portali özelleştir"
           },
           "FINISH": {
-            "TITLE": "Voila! 🎉",
+            "TITLE": "Hazır!",
             "BODY": "Her şey hazır!"
           }
         },
@@ -228,7 +228,7 @@
             "UPDATE_PORTAL_BUTTON": "Portal ayarlarını güncelle"
           },
           "FINISH_PAGE": {
-            "TITLE": "Voila!🎉 Her şey ayarlandı!",
+            "TITLE": "Hazır! Her şey ayarlandı.",
             "MESSAGE": "Bu oluşturulan portalı şimdi tüm portal sayfanızda görebilirsiniz.",
             "FINISH": "Tüm portallar sayfasına git"
           }
@@ -332,7 +332,7 @@
     },
     "TABLE": {
       "LOADING_MESSAGE": "Makaleler yükleniyor...",
-      "404": "Arama kriterlerinize uygun makale bulunamadı 🔍",
+      "404": "Arama kriterlerinize uygun makale bulunamadı",
       "NO_ARTICLES": "Uygun makale bulunmamaktadır",
       "HEADERS": {
         "TITLE": "Başlık",

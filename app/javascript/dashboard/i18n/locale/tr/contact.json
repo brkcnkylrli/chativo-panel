@@ -578,9 +578,9 @@
       "TITLE": "No contacts found in this account",
       "SUBTITLE": "Start adding new contacts by clicking on the button below",
       "BUTTON_LABEL": "Add contact",
-      "SEARCH_EMPTY_STATE_TITLE": "Aramanızla eşleşen kişi bulunamadı 🔍",
-      "LIST_EMPTY_STATE_TITLE": "No contacts available in this view 📋",
-      "ACTIVE_EMPTY_STATE_TITLE": "Şu anda aktif kişi yok 🌙"
+      "SEARCH_EMPTY_STATE_TITLE": "Aramanızla eşleşen kişi bulunamadı",
+      "LIST_EMPTY_STATE_TITLE": "Bu görünümde kişi yok",
+      "ACTIVE_EMPTY_STATE_TITLE": "Şu anda aktif kişi yok"
     },
     "LOAD_MORE": "Load more"
   },

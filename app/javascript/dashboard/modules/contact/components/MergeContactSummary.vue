@@ -24,7 +24,9 @@ export default {
     </h5>
     <ul class="ml-0 list-none">
       <li>
-        <span class="inline-block mr-1">❌</span>
+        <span
+          class="inline-block flex-shrink-0 mr-1 align-middle i-lucide-circle-x size-4 text-n-ruby-9"
+        />
         <span
           v-dompurify-html="
             $t('MERGE_CONTACTS.SUMMARY.DELETE_WARNING', {
@@ -34,7 +36,9 @@ export default {
         />
       </li>
       <li>
-        <span class="inline-block mr-1">✅</span>
+        <span
+          class="inline-block flex-shrink-0 mr-1 align-middle i-lucide-circle-check size-4 text-n-teal-9"
+        />
         <span
           v-dompurify-html="
             $t('MERGE_CONTACTS.SUMMARY.ATTRIBUTE_WARNING', {

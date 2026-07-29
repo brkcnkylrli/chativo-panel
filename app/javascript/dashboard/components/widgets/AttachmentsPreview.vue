@@ -58,8 +58,11 @@ const fileName = file => {
           class="object-cover w-6 h-6 rounded-sm"
           :src="attachment.thumb"
         />
-        <span v-else class="relative w-6 h-6 text-lg text-left -top-px">
-          📄
+        <span
+          v-else
+          class="grid place-content-center w-6 h-6 rounded-sm bg-n-alpha-2"
+        >
+          <span class="i-lucide-file-text size-4 text-n-slate-11" />
         </span>
       </div>
       <div class="max-w-3/5 min-w-[50%] overflow-hidden text-ellipsis">
