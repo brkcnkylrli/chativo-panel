@@ -13,6 +13,12 @@ import {
   DropdownItem,
 } from 'next/dropdown-menu/base';
 
+defineProps({
+  // Compact mode renders just the avatar with its status dot, so the status
+  // control can live inside the list header instead of taking its own row.
+  compact: { type: Boolean, default: false },
+});
+
 const { t } = useI18n();
 const store = useStore();
 const { isImpersonating } = useImpersonation();
@@ -61,9 +67,26 @@ function changeAvailabilityStatus(availability) {
 </script>
 
 <template>
-  <DropdownContainer class="px-3 pt-1 pb-2">
+  <DropdownContainer :class="compact ? 'shrink-0' : 'px-3 pt-1 pb-2'">
     <template #trigger="{ toggle }">
       <button
+        v-if="compact"
+        v-tooltip.bottom="activeStatus?.label"
+        type="button"
+        class="grid place-content-center rounded-full transition-colors size-8 hover:bg-n-alpha-1"
+        :aria-label="activeStatus?.label"
+        @click="toggle"
+      >
+        <Avatar
+          :name="currentUser.name || ''"
+          :src="currentUser.avatar_url"
+          :size="26"
+          :status="currentUserAvailability"
+          rounded-full
+        />
+      </button>
+      <button
+        v-else
         type="button"
         class="flex gap-2 items-center px-2 py-1.5 w-full rounded-lg outline outline-1 outline-n-weak hover:bg-n-alpha-1"
         @click="toggle"

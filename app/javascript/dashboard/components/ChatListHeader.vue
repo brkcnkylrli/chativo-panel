@@ -8,6 +8,7 @@ import ConversationBasicFilter from './widgets/conversation/ConversationBasicFil
 import SwitchLayout from 'dashboard/routes/dashboard/conversation/search/SwitchLayout.vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
 import ComposeConversation from 'dashboard/components-next/NewConversation/ComposeConversation.vue';
+import AgentStatusCard from './widgets/AgentStatusCard.vue';
 
 const props = defineProps({
   pageTitle: { type: String, required: true },
@@ -63,7 +64,8 @@ const toggleConversationLayout = () => {
       'border-b border-n-strong': hasAppliedFiltersOrActiveFolders,
     }"
   >
-    <div class="flex items-center justify-center min-w-0">
+    <div class="flex gap-2 items-center min-w-0">
+      <AgentStatusCard compact />
       <h1
         class="text-base font-medium truncate text-n-slate-12"
         :title="pageTitle"

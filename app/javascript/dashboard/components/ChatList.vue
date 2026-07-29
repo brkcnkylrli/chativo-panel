@@ -14,7 +14,6 @@ import ConversationFilter from 'next/filter/ConversationFilter.vue';
 import SaveCustomView from 'next/filter/SaveCustomView.vue';
 import ChatTypeTabs from './widgets/ChatTypeTabs.vue';
 import ConversationFolderTabs from './widgets/ConversationFolderTabs.vue';
-import AgentStatusCard from './widgets/AgentStatusCard.vue';
 import DeleteCustomViews from 'dashboard/routes/dashboard/customviews/DeleteCustomViews.vue';
 import ConversationBulkActions from './widgets/conversation/conversationBulkActions/Index.vue';
 import TeleportWithDirection from 'dashboard/components-next/TeleportWithDirection.vue';
@@ -929,30 +928,33 @@ watch(conversationFilters, (newVal, oldVal) => {
       @close="onCloseDeleteFoldersModal"
     />
 
-    <AgentStatusCard />
-
     <RouterLink
       :to="{ name: 'search' }"
-      class="flex gap-2 items-center px-2 mx-3 mb-2 h-8 rounded-lg outline outline-1 outline-n-weak bg-n-button-color"
+      class="flex gap-2 items-center px-2.5 mx-3 mb-1 h-8 rounded-lg transition-colors bg-n-alpha-1 hover:bg-n-alpha-2 text-n-slate-10"
     >
-      <span class="flex-shrink-0 i-lucide-search size-4 text-n-slate-10" />
-      <span class="flex-grow text-sm text-start text-n-slate-10">
+      <span class="flex-shrink-0 i-lucide-search size-4" />
+      <span class="flex-grow text-sm text-start">
         {{ $t('COMBOBOX.SEARCH_PLACEHOLDER') }}
       </span>
     </RouterLink>
 
-    <ConversationFolderTabs
-      :active-folder-id="foldersId"
-      @add-folder="onToggleAdvanceFiltersModal"
-    />
-
-    <ChatTypeTabs
-      v-if="!hasAppliedFiltersOrActiveFolders"
-      :items="assigneeTabItems"
-      :active-tab="activeAssigneeTab"
-      is-compact
-      @chat-tab-change="updateAssigneeTab"
-    />
+    <!-- Assignee tabs and saved filters share one row: stacked they ate two
+         strips of vertical space before the first conversation showed up. -->
+    <div class="flex gap-3 items-center px-3 min-w-0">
+      <ChatTypeTabs
+        v-if="!hasAppliedFiltersOrActiveFolders"
+        class="!w-auto !px-0 flex-shrink-0"
+        :items="assigneeTabItems"
+        :active-tab="activeAssigneeTab"
+        is-compact
+        @chat-tab-change="updateAssigneeTab"
+      />
+      <ConversationFolderTabs
+        class="flex-1 !px-0 min-w-0"
+        :active-folder-id="foldersId"
+        @add-folder="onToggleAdvanceFiltersModal"
+      />
+    </div>
 
     <p
       v-if="!chatListLoading && !conversationList.length"
