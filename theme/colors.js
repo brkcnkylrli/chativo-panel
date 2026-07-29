@@ -1,6 +1,4 @@
 const {
-  iris,
-  irisDark,
   green,
   greenDark,
   yellow,
@@ -15,18 +13,18 @@ const {
 
 export const colors = {
   woot: {
-    25: iris.iris2,
-    50: iris.iris3,
-    75: iris.iris4,
-    100: iris.iris5,
-    200: iris.iris7,
-    300: iris.iris8,
-    400: irisDark.iris11,
-    500: irisDark.iris10,
-    600: irisDark.iris9,
-    700: irisDark.iris8,
-    800: irisDark.iris6,
-    900: irisDark.iris2,
+    25: violet.violet2,
+    50: violet.violet3,
+    75: violet.violet4,
+    100: violet.violet5,
+    200: violet.violet7,
+    300: violet.violet8,
+    400: violetDark.violet11,
+    500: violetDark.violet10,
+    600: violetDark.violet9,
+    700: violetDark.violet8,
+    800: violetDark.violet6,
+    900: violetDark.violet2,
   },
   green: {
     50: greenDark.green12,

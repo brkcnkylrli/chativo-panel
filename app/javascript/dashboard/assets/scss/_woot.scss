@@ -57,11 +57,10 @@ body {
 
 @layer utilities {
   /**
-   * Vurgu rengi artik notr: koyu temada beyaza, acik temada siyaha yakin.
-   * Upstream bilesenlerin cogu "bg-n-brand text-white" yaziyor, bu da koyu
-   * temada beyaz uzerine beyaz demek olurdu. Iki sinifin birlikte gectigi
-   * yerlerde yaziyi temayla donen degiskene baglıyoruz; boylece yuzlerce
-   * bilesene dokunmadan okunakli kaliyor.
+   * Vurgu uzerindeki yaziyi --brand-fg'ye baglar. Su an her iki temada da
+   * beyaz, yani gorunur bir etkisi yok; marka rengi ileride acik bir tona
+   * cekilirse yuzlerce "bg-n-brand text-white" kullanimi kendiliginden
+   * okunakli kalsin diye duruyor.
    */
   .bg-n-brand.text-white {
     color: rgb(var(--brand-fg));
