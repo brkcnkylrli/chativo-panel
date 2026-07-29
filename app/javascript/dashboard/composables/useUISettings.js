@@ -1,6 +1,14 @@
 import { computed } from 'vue';
 import { useStore, useStoreGetters } from 'dashboard/composables/store';
 
+// Yan panel ilk acilista sekiz kapali kutu olarak geliyordu ve hicbir bilgi
+// gorunmuyordu. Bu ikisi konusma ekraninda en cok bakilan bolumler; kullanici
+// kapatana kadar acik gelirler.
+const DEFAULT_OPEN_SIDEBAR_ITEMS = Object.freeze([
+  'is_conv_details_open',
+  'is_previous_conv_open',
+]);
+
 export const DEFAULT_CONVERSATION_SIDEBAR_ITEMS_ORDER = Object.freeze([
   { name: 'conversation_actions' },
   { name: 'macros' },
@@ -155,7 +163,10 @@ export function useUISettings() {
     updateUISettings,
     conversationSidebarItemsOrder: useConversationSidebarItemsOrder(uiSettings),
     contactSidebarItemsOrder: useContactSidebarItemsOrder(uiSettings),
-    isContactSidebarItemOpen: key => !!uiSettings.value[key],
+    isContactSidebarItemOpen: key =>
+      key in uiSettings.value
+        ? !!uiSettings.value[key]
+        : DEFAULT_OPEN_SIDEBAR_ITEMS.includes(key),
     toggleSidebarUIState: key =>
       toggleSidebarUIState(key, uiSettings, updateUISettings),
     setSignatureFlagForInbox: (channelType, value) =>

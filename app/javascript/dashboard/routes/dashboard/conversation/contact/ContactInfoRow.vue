@@ -78,7 +78,7 @@ export default {
 </script>
 
 <template>
-  <div class="group/row w-full h-5 ltr:-ml-1 rtl:-mr-1">
+  <div v-if="value || editable" class="group/row w-full h-5 ltr:-ml-1 rtl:-mr-1">
     <!-- Inline edit mode -->
     <div v-if="isEditing" class="flex items-center gap-2">
       <EmojiOrIcon
@@ -117,8 +117,8 @@ export default {
       >
         {{ value }}
       </span>
-      <span v-else class="text-sm text-n-slate-11">
-        {{ $t('CONTACT_PANEL.NOT_AVAILABLE') }}
+      <span v-else class="text-sm text-n-slate-10">
+        {{ title }}
       </span>
       <NextButton
         v-if="showCopy"
@@ -153,8 +153,8 @@ export default {
         v-dompurify-html="value"
         class="overflow-hidden text-sm whitespace-nowrap text-ellipsis"
       />
-      <span v-else class="text-sm text-n-slate-11">
-        {{ $t('CONTACT_PANEL.NOT_AVAILABLE') }}
+      <span v-else class="text-sm text-n-slate-10">
+        {{ title }}
       </span>
       <NextButton
         v-if="editable"
