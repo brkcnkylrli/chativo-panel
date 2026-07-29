@@ -76,6 +76,35 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 
+  /* Kaydirma cubugu yalnizca fare kabin uzerindeyken gorunur. Konusma
+     listesindeki kalici gri seridi kaldirir; yer her zaman ayrildigi icin
+     gorunurken sayfa kaymaz. */
+  .scrollbar-on-hover {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  .scrollbar-on-hover:hover {
+    scrollbar-color: rgb(var(--slate-7)) transparent;
+  }
+
+  .scrollbar-on-hover::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-on-hover::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-on-hover::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 9999px;
+  }
+
+  .scrollbar-on-hover:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--slate-7));
+  }
+
   /**
    * ============================================================================
    * TYPOGRAPHY UTILITIES
