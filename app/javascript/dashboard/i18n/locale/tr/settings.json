@@ -411,7 +411,9 @@
     "DOCS": "Dokümantasyonu oku",
     "SECURITY": "Güvenlik",
     "CAPTAIN_AI": "Yapay Zeka",
-    "CONVERSATION_WORKFLOW": "Konuşma Akışı"
+    "CONVERSATION_WORKFLOW": "Konuşma Akışı",
+    "COLLAPSE_MENU": "Menüyü daralt",
+    "EXPAND_MENU": "Menüyü genişlet"
   },
   "DATA_IMPORTS": {
     "HEADER": "Veri",

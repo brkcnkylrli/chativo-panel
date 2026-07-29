@@ -412,7 +412,9 @@
     "DOCS": "Read docs",
     "SECURITY": "Security",
     "CAPTAIN_AI": "Captain",
-    "CONVERSATION_WORKFLOW": "Conversation Workflow"
+    "CONVERSATION_WORKFLOW": "Conversation Workflow",
+    "COLLAPSE_MENU": "Collapse menu",
+    "EXPAND_MENU": "Expand menu"
   },
   "DATA_IMPORTS": {
     "HEADER": "Data",
