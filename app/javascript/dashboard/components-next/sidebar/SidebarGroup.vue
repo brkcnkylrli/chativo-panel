@@ -274,11 +274,14 @@ watch(
           :title="label"
           @click="handleCollapsedClick"
         >
+          <!-- Active item reads as frosted glass: translucent brand fill over a
+               blurred backdrop, a thin brand rim and a light line along the top
+               edge. The icon stays white so contrast survives the transparency. -->
           <span
-            class="grid place-content-center rounded-lg transition-colors duration-150 ease-out size-8"
+            class="grid place-content-center rounded-lg transition-all duration-150 ease-out size-8"
             :class="
               isActive || hasActiveChild
-                ? 'bg-n-brand text-white'
+                ? 'bg-n-brand/30 text-white backdrop-blur-md ring-1 ring-inset ring-n-brand/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]'
                 : 'group-hover:bg-n-alpha-2'
             "
           >

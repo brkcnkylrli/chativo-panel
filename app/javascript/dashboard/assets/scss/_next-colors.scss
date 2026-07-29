@@ -22,6 +22,11 @@
     // asagidaki iki satiri (acik ve koyu tema) duzenlemek yeterli.
     --brand: 91 91 214;
 
+    // Sol seridin zemini. Notr gri degil: icinde bir tutam marka moru var,
+    // boylece govdeden ayrisirken aktif ogedeki mor cam vurgu ayni aileden
+    // gelmis gibi oturuyor.
+    --sidebar: 250 250 254;
+
     --iris-1: 253 253 255;
     --iris-2: 248 248 255;
     --iris-3: 240 241 254;
@@ -175,6 +180,8 @@
     --slate-12: 237 238 240;
 
     --brand: 91 91 214;
+
+    --sidebar: 20 19 28;
 
     --iris-1: 19 19 30;
     --iris-2: 23 22 37;

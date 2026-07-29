@@ -227,6 +227,7 @@ export const colors = {
 
     black: '#000000',
     brand: 'rgb(var(--brand) / <alpha-value>)',
+    sidebar: 'rgb(var(--sidebar) / <alpha-value>)',
     portal: 'var(--dynamic-portal-color)',
     'portal-soft': 'var(--dynamic-portal-color-soft)',
     'portal-faint': 'var(--dynamic-portal-color-faint)',
