@@ -28,7 +28,7 @@
     // Sol seridin zemini. Notr gri degil: icinde bir tutam marka moru var,
     // boylece govdeden ayrisirken aktif ogedeki mor cam vurgu ayni aileden
     // gelmis gibi oturuyor.
-    --sidebar: 250 250 254;
+    --sidebar: 250 250 250;
 
     --iris-1: 253 253 255;
     --iris-2: 248 248 255;
@@ -188,7 +188,7 @@
     --brand: 110 86 207;
     --brand-fg: 255 255 255;
 
-    --sidebar: 22 19 30;
+    --sidebar: 8 8 9;
 
     --iris-1: 19 19 30;
     --iris-2: 23 22 37;
@@ -281,27 +281,27 @@
     --violet-11: 169 153 236;
     --violet-12: 226 221 254;
 
-    // Koyu temanin uc kademesi. Hepsi sol seridin (--sidebar) moruyla ayni
-    // aileden: onceden dordu de notr #141517 idi ve kolonlar birbirinden hic
-    // ayrismiyordu.
-    --background-color: 28 26 36;
-    --canvas: 19 17 24; // sohbet akisi - en koyu
-    --surface-1: 24 22 31; // liste, sag panel, kabuk
-    --surface-2: 27 25 35;
-    --surface-active: 53 50 66;
+    // Koyu temanin uc kademesi: saf siyahtan yukari dogru notr gri. Mor tonlu
+    // deneme calismadi (zemin camurlu goruyordu); renk artik yalnizca vurguda
+    // ve giden balonda.
+    --background-color: 20 20 22;
+    --canvas: 0 0 0; // sohbet akisi - saf siyah
+    --surface-1: 10 10 11; // liste, sag panel, kabuk
+    --surface-2: 18 18 20;
+    --surface-active: 46 46 50;
     --background-input-box: 255, 255, 255, 0.02;
     --text-blue: 213 234 255;
     --text-purple: 232 233 254;
     --text-amber: 255 247 234;
-    --border-strong: 50 47 60;
+    --border-strong: 45 45 49;
     // Ayiricilar zeminden neredeyse ayirt edilemiyordu; kutu cerceveleri
     // kalkinca tek duzen isareti bu cizgi kaldigi icin bir tik yukseltildi.
-    --border-weak: 38 39 48;
+    --border-weak: 32 32 35;
     --border-blue-strong: 201 226 255;
-    --solid-1: 31 28 40;
-    --solid-2: 36 33 46;
-    --solid-3: 46 43 58;
-    --solid-active: 53 50 66;
+    --solid-1: 22 22 24;
+    --solid-2: 28 28 31;
+    --solid-3: 38 38 42;
+    --solid-active: 46 46 50;
     --solid-amber: 56 50 41;
     --solid-blue: 15 57 102;
     --solid-blue-2: 26 29 35;
@@ -309,17 +309,17 @@
     --solid-purple: 51 51 107;
     --solid-red: 90 33 34;
     --solid-amber-button: 255 221 141;
-    --card-color: 29 27 38;
+    --card-color: 22 22 24;
     --overlay: 0, 0, 0, 0.4;
     --overlay-avatar: 0, 0, 0, 0.05;
-    --button-color: 43 40 54;
+    --button-color: 38 38 42;
     --button-hover-color: 0, 0, 0, 0.15;
-    --label-background: 37 34 47;
+    --label-background: 30 30 33;
     --label-border: 255, 255, 255, 0.03;
 
-    --alpha-1: 37, 34, 47, 0.8;
-    --alpha-2: 147, 153, 176, 0.12;
-    --alpha-3: 34, 31, 44, 0.95;
+    --alpha-1: 255, 255, 255, 0.04;
+    --alpha-2: 255, 255, 255, 0.07;
+    --alpha-3: 22, 22, 24, 0.95;
     --black-alpha-1: 0, 0, 0, 0.3;
     --black-alpha-2: 0, 0, 0, 0.2;
     --border-blue: 39, 129, 246, 0.5;
