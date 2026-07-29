@@ -276,7 +276,7 @@ export default {
 </script>
 
 <template>
-  <div class="flex justify-between p-3" :class="wrapClass">
+  <div class="flex gap-2 justify-between items-center px-3 py-2" :class="wrapClass">
     <div class="left-wrap">
       <NextButton
         v-if="!isEditorDisabled"
@@ -397,13 +397,18 @@ export default {
       />
     </div>
     <div class="right-wrap">
+      <!-- Round icon button instead of a labelled one: the label repeated the
+           shortcut on every conversation and crowded the row. The shortcut now
+           lives in the tooltip. -->
       <NextButton
-        :label="sendButtonText"
+        v-tooltip.top-end="sendButtonText"
+        :icon="isNote ? 'i-lucide-notebook-pen' : 'i-lucide-send-horizontal'"
         type="submit"
         sm
         :color="isNote ? 'amber' : 'blue'"
         :disabled="isSendDisabled"
-        class="flex-shrink-0"
+        :aria-label="sendButtonText"
+        class="flex-shrink-0 !rounded-full !size-8"
         @click="onSend"
       />
     </div>
