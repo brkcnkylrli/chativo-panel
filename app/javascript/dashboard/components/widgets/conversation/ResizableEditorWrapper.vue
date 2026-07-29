@@ -8,8 +8,10 @@ const props = defineProps({
   containerHeight: { type: Number, default: 0 },
 });
 
-const DEFAULT_HEIGHT = 120;
-const MIN_HEIGHT = 80;
+// Varsayilan yukseklik bos bir kutuda ~200 piksellik olu alan biraktiriyordu;
+// kutu artik iki satirlik yerle aciliyor, gerisini kullanici surukleyerek acar.
+const DEFAULT_HEIGHT = 80;
+const MIN_HEIGHT = 64;
 const MIN_MESSAGES_HEIGHT = 200;
 const EXPAND_RATIO = 0.5;
 const RESET_DELAY_MS = 120;
