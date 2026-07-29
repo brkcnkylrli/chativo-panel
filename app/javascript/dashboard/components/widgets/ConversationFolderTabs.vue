@@ -25,7 +25,7 @@ const isAllActive = computed(() => !Number(props.activeFolderId));
 <template>
   <div
     v-if="hasFolders"
-    class="flex gap-1.5 items-center px-3 py-1.5 overflow-x-auto no-scrollbar"
+    class="flex gap-1.5 items-center px-3 pt-0.5 pb-1 overflow-x-auto no-scrollbar"
   >
     <RouterLink
       :to="accountScopedRoute('home')"

@@ -938,23 +938,20 @@ watch(conversationFilters, (newVal, oldVal) => {
       </span>
     </RouterLink>
 
-    <!-- Assignee tabs and saved filters share one row: stacked they ate two
-         strips of vertical space before the first conversation showed up. -->
-    <div class="flex gap-3 items-center px-3 min-w-0">
-      <ChatTypeTabs
-        v-if="!hasAppliedFiltersOrActiveFolders"
-        class="!w-auto !px-0 flex-shrink-0"
-        :items="assigneeTabItems"
-        :active-tab="activeAssigneeTab"
-        is-compact
-        @chat-tab-change="updateAssigneeTab"
-      />
-      <ConversationFolderTabs
-        class="flex-1 !px-0 min-w-0"
-        :active-folder-id="foldersId"
-        @add-folder="onToggleAdvanceFiltersModal"
-      />
-    </div>
+    <!-- Saved filters sit above the assignee tabs, not beside them: the three
+         assignee tabs already fill most of a 340px column. -->
+    <ConversationFolderTabs
+      :active-folder-id="foldersId"
+      @add-folder="onToggleAdvanceFiltersModal"
+    />
+
+    <ChatTypeTabs
+      v-if="!hasAppliedFiltersOrActiveFolders"
+      :items="assigneeTabItems"
+      :active-tab="activeAssigneeTab"
+      is-compact
+      @chat-tab-change="updateAssigneeTab"
+    />
 
     <p
       v-if="!chatListLoading && !conversationList.length"
