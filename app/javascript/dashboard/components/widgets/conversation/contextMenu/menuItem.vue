@@ -67,7 +67,7 @@ defineProps({
   }
 
   &:hover {
-    @apply bg-n-brand text-white;
+    @apply bg-n-brand text-[rgb(var(--brand-fg))];
   }
 }
 

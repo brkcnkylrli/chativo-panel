@@ -56,6 +56,17 @@ body {
 }
 
 @layer utilities {
+  /**
+   * Vurgu rengi artik notr: koyu temada beyaza, acik temada siyaha yakin.
+   * Upstream bilesenlerin cogu "bg-n-brand text-white" yaziyor, bu da koyu
+   * temada beyaz uzerine beyaz demek olurdu. Iki sinifin birlikte gectigi
+   * yerlerde yaziyi temayla donen degiskene baglıyoruz; boylece yuzlerce
+   * bilesene dokunmadan okunakli kaliyor.
+   */
+  .bg-n-brand.text-white {
+    color: rgb(var(--brand-fg));
+  }
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;

@@ -29,14 +29,14 @@ const globalConfig = useMapGetter('globalConfig/get');
       />
       <path
         d="M11.4172 11.4172H7.70831C5.66383 11.4172 4 9.75328 4 7.70828C4 5.66394 5.66383 4 7.70835 4C9.75339 4 11.4172 5.66394 11.4172 7.70828V11.4172Z"
-        fill="white"
-        stroke="white"
+        fill="rgb(var(--brand-fg))"
+        stroke="rgb(var(--brand-fg))"
         stroke-width="0.1875"
       />
     </g>
     <defs>
       <clipPath id="woot-logo-clip-2342424e23u32098">
-        <rect width="16" height="16" fill="white" />
+        <rect width="16" height="16" fill="rgb(var(--brand-fg))" />
       </clipPath>
     </defs>
   </svg>

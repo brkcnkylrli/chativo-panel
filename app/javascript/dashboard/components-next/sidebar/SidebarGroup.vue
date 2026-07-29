@@ -281,7 +281,7 @@ watch(
             class="grid place-content-center rounded-lg transition-all duration-150 ease-out size-8"
             :class="
               isActive || hasActiveChild
-                ? 'bg-n-brand/30 text-white backdrop-blur-md ring-1 ring-inset ring-n-brand/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]'
+                ? 'bg-n-brand text-[rgb(var(--brand-fg))] shadow-sm'
                 : 'group-hover:bg-n-alpha-2'
             "
           >
