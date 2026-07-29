@@ -1,9 +1,12 @@
 <script setup>
 import { computed, reactive } from 'vue';
+import { fromUnixTime, isSameDay, isToday, isYesterday } from 'date-fns';
+import { useI18n } from 'vue-i18n';
 import Message from './Message.vue';
 import { MESSAGE_TYPES } from './constants.js';
 import { useCamelCase } from 'dashboard/composables/useTransformKeys';
 import { useMapGetter } from 'dashboard/composables/store.js';
+import { dateFormat } from 'shared/helpers/timeHelper';
 import MessageApi from 'dashboard/api/inbox/message.js';
 
 /**
@@ -40,6 +43,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['retry']);
+
+const { t } = useI18n();
 
 const allMessages = computed(() => {
   return useCamelCase(props.messages, {
@@ -124,6 +129,33 @@ const shouldGroupWithNext = (index, searchList) => {
 };
 
 /**
+ * Gunun ilk mesajinda tarih ayraci gosterilir; akis boyunca hangi gunde
+ * oldugunu anlamanin baska yolu yok.
+ * @param {Number} index - Index of the current message
+ * @param {Array} searchList - Array of messages to check
+ * @returns {Boolean} - Whether a date separator belongs above this message
+ */
+const shouldShowDateSeparator = (index, searchList) => {
+  if (index === 0) return true;
+
+  return !isSameDay(
+    fromUnixTime(searchList[index].createdAt),
+    fromUnixTime(searchList[index - 1].createdAt)
+  );
+};
+
+/**
+ * @param {Number} createdAt - Unix timestamp of the message
+ * @returns {String} - Localized day label for the separator
+ */
+const dateSeparatorLabel = createdAt => {
+  const date = fromUnixTime(createdAt);
+  if (isToday(date)) return t('CONVERSATION.DATE_SEPARATOR.TODAY');
+  if (isYesterday(date)) return t('CONVERSATION.DATE_SEPARATOR.YESTERDAY');
+  return dateFormat(createdAt);
+};
+
+/**
  * Gets the message that was replied to
  * @param {Object} parentMessage - The message containing the reply reference
  * @returns {Object|null} - The message being replied to, or null if not found
@@ -170,6 +202,16 @@ const getInReplyToMessage = parentMessage => {
         v-if="firstUnreadId && message.id === firstUnreadId"
         name="unreadBadge"
       />
+      <li
+        v-if="shouldShowDateSeparator(index, allMessages)"
+        class="flex justify-center my-4"
+      >
+        <span
+          class="px-2.5 py-1 text-xs rounded-full bg-n-alpha-2 text-n-slate-11"
+        >
+          {{ dateSeparatorLabel(message.createdAt) }}
+        </span>
+      </li>
       <Message
         v-bind="message"
         :is-email-inbox="isAnEmailChannel"

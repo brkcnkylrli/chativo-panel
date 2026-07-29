@@ -286,6 +286,10 @@
     "MESSAGE_ERROR": "Bu mesaj gönderilemiyor, lütfen daha sonra tekrar deneyin",
     "SENT_BY": "Tarafından gönderildi:",
     "BOT": "Bot",
+    "DATE_SEPARATOR": {
+      "TODAY": "Bugün",
+      "YESTERDAY": "Dün"
+    },
     "NATIVE_APP": "Uygulamanın kendisi",
     "NATIVE_APP_ADVISORY": "Bu mesaj uygulamanın kendisinden gönderildi. Mesaj penceresinin açık kalması için Chativo üzerinden yanıtlayın.",
     "SEND_FAILED": "Mesaj gönderilemedi! Tekrar deneyin",
