@@ -419,7 +419,7 @@
         "SLUG": {
           "LABEL": "Slug",
           "PLACEHOLDER": "URL'ler için kategori slug'ı",
-          "HELP_TEXT": "app.chatwoot.com/hc/my-portal/en-US/categories/my-slug",
+          "HELP_TEXT": "app.chativo.tr/hc/portalim/tr/categories/kisa-ad",
           "ERROR": "Slug gereklidir"
         },
         "DESCRIPTION": {
@@ -450,7 +450,7 @@
         "SLUG": {
           "LABEL": "Slug",
           "PLACEHOLDER": "URL'ler için kategori slug'ı",
-          "HELP_TEXT": "app.chatwoot.com/hc/my-portal/en-US/categories/my-slug",
+          "HELP_TEXT": "app.chativo.tr/hc/portalim/tr/categories/kisa-ad",
           "ERROR": "Slug gereklidir"
         },
         "DESCRIPTION": {
@@ -687,7 +687,7 @@
             "LABEL": "Slug",
             "PLACEHOLDER": "URL'ler için kategori slug'ı",
             "ERROR": "Slug gereklidir",
-            "HELP_TEXT": "app.chatwoot.com/hc/{portalSlug}/{localeCode}/categories/{categorySlug}"
+            "HELP_TEXT": "app.chativo.tr/hc/{portalSlug}/{localeCode}/categories/{categorySlug}"
           },
           "DESCRIPTION": {
             "LABEL": "Açıklama",
@@ -847,7 +847,7 @@
       "CONFIRM_BUTTON_LABEL": "Yarat",
       "NAME": {
         "LABEL": "İsim",
-        "PLACEHOLDER": "User Guide | Chatwoot",
+        "PLACEHOLDER": "Kullanım Kılavuzu | Chativo",
         "MESSAGE": "Choose an name for your portal.",
         "ERROR": "Ad gerekli"
       },
