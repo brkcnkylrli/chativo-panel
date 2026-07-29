@@ -230,6 +230,7 @@ export const colors = {
     'portal-soft': 'var(--dynamic-portal-color-soft)',
     'portal-faint': 'var(--dynamic-portal-color-faint)',
     background: 'rgb(var(--background-color) / <alpha-value>)',
+    canvas: 'rgb(var(--canvas) / <alpha-value>)',
     'input-background': 'rgba(var(--background-input-box))',
     surface: {
       1: 'rgb(var(--surface-1) / <alpha-value>)',
