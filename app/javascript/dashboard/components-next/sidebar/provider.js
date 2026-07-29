@@ -7,7 +7,9 @@ const SidebarControl = Symbol('SidebarControl');
 
 // Collapsed sidebar is a labelled rail: the icon sits above a small caption,
 // so it needs more room than the 56px icon-only rail upstream ships with.
-const RAIL_WIDTH = 72;
+// 80px is what the longest single-word label ("Konusmalar") needs without
+// spilling out of its button.
+const RAIL_WIDTH = 80;
 const EXPANDED_WIDTH = 200;
 // New users land on the rail; dragging the handle still opens the tree view.
 const DEFAULT_WIDTH = RAIL_WIDTH;

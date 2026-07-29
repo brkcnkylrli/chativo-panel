@@ -13,6 +13,8 @@ import Dialog from 'dashboard/components-next/dialog/Dialog.vue';
 import ConversationFilter from 'next/filter/ConversationFilter.vue';
 import SaveCustomView from 'next/filter/SaveCustomView.vue';
 import ChatTypeTabs from './widgets/ChatTypeTabs.vue';
+import ConversationFolderTabs from './widgets/ConversationFolderTabs.vue';
+import AgentStatusCard from './widgets/AgentStatusCard.vue';
 import DeleteCustomViews from 'dashboard/routes/dashboard/customviews/DeleteCustomViews.vue';
 import ConversationBulkActions from './widgets/conversation/conversationBulkActions/Index.vue';
 import TeleportWithDirection from 'dashboard/components-next/TeleportWithDirection.vue';
@@ -925,6 +927,13 @@ watch(conversationFilters, (newVal, oldVal) => {
       :custom-views-id="foldersId"
       :open-last-item-after-delete="openLastItemAfterDeleteInFolder"
       @close="onCloseDeleteFoldersModal"
+    />
+
+    <AgentStatusCard />
+
+    <ConversationFolderTabs
+      :active-folder-id="foldersId"
+      @add-folder="onToggleAdvanceFiltersModal"
     />
 
     <ChatTypeTabs

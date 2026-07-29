@@ -275,7 +275,9 @@ watch(
           @click="handleCollapsedClick"
         >
           <Icon v-if="icon" :icon="icon" class="size-5" />
-          <span class="w-full leading-tight text-center text-xxs line-clamp-2">
+          <span
+            class="w-full leading-tight text-center break-words text-xxs line-clamp-2"
+          >
             {{ label }}
           </span>
         </component>

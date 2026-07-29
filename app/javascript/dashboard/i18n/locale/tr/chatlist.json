@@ -14,6 +14,7 @@
       "INPUT": "Kişileri, Sohbetleri, Kaydedilen Yanıtları Ara .."
     },
     "FILTER_ALL": "Hepsi",
+    "FOLDER_TABS_ALL": "Tümü",
     "ASSIGNEE_TYPE_TABS": {
       "me": "Benim",
       "unassigned": "Atanmamış",

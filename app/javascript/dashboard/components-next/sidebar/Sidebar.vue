@@ -987,7 +987,9 @@ const menuItems = computed(() => {
       </div>
       <div
         class="flex gap-2"
-        :class="isEffectivelyCollapsed ? 'flex-col items-center' : 'px-2'"
+        :class="
+          isEffectivelyCollapsed ? 'justify-center gap-1.5 px-1.5' : 'px-2'
+        "
       >
         <RouterLink
           v-if="!isEffectivelyCollapsed"
@@ -1007,7 +1009,7 @@ const menuItems = computed(() => {
         <RouterLink
           v-else
           :to="{ name: 'search' }"
-          class="flex items-center justify-center size-8 rounded-lg outline outline-1 outline-n-weak bg-n-button-color transition-all duration-100 ease-out hover:bg-n-alpha-2 dark:hover:bg-n-slate-9/30"
+          class="flex items-center justify-center size-7 rounded-lg outline outline-1 outline-n-weak bg-n-button-color transition-all duration-100 ease-out hover:bg-n-alpha-2 dark:hover:bg-n-slate-9/30"
           :title="t('COMBOBOX.SEARCH_PLACEHOLDER')"
         >
           <span class="i-lucide-search size-4 text-n-slate-11" />
@@ -1021,7 +1023,7 @@ const menuItems = computed(() => {
               class="dark:hover:!bg-n-slate-9/30"
               :class="[
                 isEffectivelyCollapsed
-                  ? '!size-8 !outline-n-weak !text-n-slate-11'
+                  ? '!size-7 !outline-n-weak !text-n-slate-11'
                   : '!h-7 !outline-n-weak !text-n-slate-11',
                 { '!bg-n-alpha-2 dark:!bg-n-slate-9/30': isOpen },
               ]"
