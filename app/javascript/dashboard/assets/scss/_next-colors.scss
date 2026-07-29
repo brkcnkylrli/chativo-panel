@@ -287,7 +287,9 @@
     --text-purple: 232 233 254;
     --text-amber: 255 247 234;
     --border-strong: 46 45 50;
-    --border-weak: 31 31 37;
+    // Ayiricilar zeminden neredeyse ayirt edilemiyordu; kutu cerceveleri
+    // kalkinca tek duzen isareti bu cizgi kaldigi icin bir tik yukseltildi.
+    --border-weak: 38 39 45;
     --border-blue-strong: 201 226 255;
     --solid-1: 23 23 26;
     --solid-2: 29 30 36;
