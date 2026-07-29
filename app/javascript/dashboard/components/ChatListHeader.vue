@@ -7,6 +7,7 @@ import wootConstants from 'dashboard/constants/globals';
 import ConversationBasicFilter from './widgets/conversation/ConversationBasicFilter.vue';
 import SwitchLayout from 'dashboard/routes/dashboard/conversation/search/SwitchLayout.vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
+import ComposeConversation from 'dashboard/components-next/NewConversation/ComposeConversation.vue';
 
 const props = defineProps({
   pageTitle: { type: String, required: true },
@@ -86,6 +87,18 @@ const toggleConversationLayout = () => {
       </span>
     </div>
     <div class="flex items-center gap-1">
+      <ComposeConversation align="start">
+        <template #trigger="{ isOpen }">
+          <NextButton
+            v-tooltip.top-end="$t('CHAT_LIST.NEW_CONVERSATION')"
+            icon="i-lucide-pen-line"
+            slate
+            xs
+            faded
+            :class="{ '!bg-n-alpha-2': isOpen }"
+          />
+        </template>
+      </ComposeConversation>
       <template v-if="hasAppliedFilters && !hasActiveFolders">
         <div class="relative">
           <NextButton

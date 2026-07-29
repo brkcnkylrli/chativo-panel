@@ -931,6 +931,16 @@ watch(conversationFilters, (newVal, oldVal) => {
 
     <AgentStatusCard />
 
+    <RouterLink
+      :to="{ name: 'search' }"
+      class="flex gap-2 items-center px-2 mx-3 mb-2 h-8 rounded-lg outline outline-1 outline-n-weak bg-n-button-color"
+    >
+      <span class="flex-shrink-0 i-lucide-search size-4 text-n-slate-10" />
+      <span class="flex-grow text-sm text-start text-n-slate-10">
+        {{ $t('COMBOBOX.SEARCH_PLACEHOLDER') }}
+      </span>
+    </RouterLink>
+
     <ConversationFolderTabs
       :active-folder-id="foldersId"
       @add-folder="onToggleAdvanceFiltersModal"
