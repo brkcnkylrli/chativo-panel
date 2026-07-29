@@ -142,6 +142,10 @@
     "DELIVERED": "Başarıyla teslim edildi",
     "NO_MESSAGES": "Mesaj yok",
     "NO_CONTENT": "Kullanılabilir içerik yok",
+    "PREVIEW_PREFIX": {
+      "OUTGOING": "Siz:",
+      "PRIVATE": "Not:"
+    },
     "HIDE_QUOTED_TEXT": "Alıntı Yapılan Mesajı Gizle",
     "SHOW_QUOTED_TEXT": "Alıntı Yapılan Mesajı Göster",
     "MESSAGE_READ": "Oku",

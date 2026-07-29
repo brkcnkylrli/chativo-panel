@@ -63,18 +63,14 @@ export default {
 <template>
   <div class="overflow-hidden text-ellipsis whitespace-nowrap">
     <template v-if="showMessageType">
-      <fluent-icon
-        v-if="isMessagePrivate"
-        size="16"
-        class="-mt-0.5 align-middle text-n-slate-11 inline-block"
-        icon="lock-closed"
-      />
-      <fluent-icon
-        v-else-if="messageByAgent"
-        size="16"
-        class="-mt-0.5 align-middle text-n-slate-11 inline-block"
-        icon="arrow-reply"
-      />
+      <!-- Ikon yerine metin oneki: 16 pikselik ok glifi satirda kirik
+           gorunuyordu, "Siz:" hem daha okunur hem daha az gurultulu. -->
+      <span v-if="isMessagePrivate" class="text-n-slate-10">
+        {{ $t('CHAT_LIST.PREVIEW_PREFIX.PRIVATE') }}
+      </span>
+      <span v-else-if="messageByAgent" class="text-n-slate-10">
+        {{ $t('CHAT_LIST.PREVIEW_PREFIX.OUTGOING') }}
+      </span>
       <fluent-icon
         v-else-if="isMessageAnActivity"
         size="16"

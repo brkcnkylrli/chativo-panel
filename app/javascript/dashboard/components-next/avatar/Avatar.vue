@@ -55,24 +55,12 @@ const { t } = useI18n();
 const isImageValid = ref(true);
 const fileInput = ref(null);
 
+// Isim uzunluguna gore donen alti renkli palet, listede rastgele pembe/turuncu/
+// yesil kareler uretiyordu. Monogram notr zeminde durur; renk arayuzde yalnizca
+// durum ve vurgu tasir.
 const AVATAR_COLORS = {
-  dark: [
-    ['#4B143D', '#FF8DCC'],
-    ['#3F220D', '#FFA366'],
-    ['#2A2A2A', '#ADB1B8'],
-    ['#023B37', '#0BD8B6'],
-    ['#27264D', '#A19EFF'],
-    ['#1D2E62', '#9EB1FF'],
-  ],
-  light: [
-    ['#FBDCEF', '#C2298A'],
-    ['#FFE0BB', '#99543A'],
-    ['#E8E8E8', '#60646C'],
-    ['#CCF3EA', '#008573'],
-    ['#EBEBFE', '#4747C2'],
-    ['#E1E9FF', '#3A5BC7'],
-  ],
-  default: { bg: '#E8E8E8', text: '#60646C' },
+  light: { bg: '#E8E8E8', text: '#60646C' },
+  dark: { bg: '#2A2A2A', text: '#ADB1B8' },
 };
 
 const STATUS_CLASSES = computed(() => ({
@@ -95,17 +83,6 @@ const initials = computed(() => {
         .toUpperCase();
 });
 
-const getColorsByNameLength = computed(() => {
-  if (!props.name) return AVATAR_COLORS.default;
-
-  const index = props.name.length % AVATAR_COLORS.light.length;
-  return {
-    bg: AVATAR_COLORS.light[index][0],
-    darkBg: AVATAR_COLORS.dark[index][0],
-    text: AVATAR_COLORS.light[index][1],
-    darkText: AVATAR_COLORS.dark[index][1],
-  };
-});
 
 const containerStyles = computed(() => ({
   width: `${props.size}px`,
@@ -129,14 +106,14 @@ const avatarStyles = computed(() => ({
   ...containerStyles.value,
   backgroundColor:
     !showDefaultAvatar.value && (!props.src || !isImageValid.value)
-      ? getColorsByNameLength.value.bg
+      ? AVATAR_COLORS.light.bg
       : undefined,
   color:
     !showDefaultAvatar.value && (!props.src || !isImageValid.value)
-      ? getColorsByNameLength.value.text
+      ? AVATAR_COLORS.light.text
       : undefined,
-  '--dark-bg': getColorsByNameLength.value.darkBg,
-  '--dark-text': getColorsByNameLength.value.darkText,
+  '--dark-bg': AVATAR_COLORS.dark.bg,
+  '--dark-text': AVATAR_COLORS.dark.text,
 }));
 
 const badgeStyles = computed(() => {
