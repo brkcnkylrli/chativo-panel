@@ -6,7 +6,7 @@
     "LIST": {
       "404": "Bu grupta aktif görüşme yok."
     },
-    "FAILED_TO_SEND": "Failed to send",
+    "FAILED_TO_SEND": "Gönderilemedi",
     "TAB_HEADING": "Konuşmalar",
     "MENTION_HEADING": "Bahsedilmeler",
     "UNATTENDED_HEADING": "İlgilenilmemiş",
@@ -80,10 +80,10 @@
         "TEXT": "Cevap Bekleyen: Kısa olan"
       },
       "priority_desc_created_at_asc": {
-        "TEXT": "Priority: Highest first, Created: Oldest first"
+        "TEXT": "Öncelik: Yüksek önce, Oluşturma: Eski önce"
       },
       "unread": {
-        "TEXT": "Unread Count: Highest first"
+        "TEXT": "Okunmamış sayısı: Çok olan önce"
       }
     },
     "ATTACHMENTS": {
@@ -109,10 +109,10 @@
         "CONTENT": "bir url paylaştı"
       },
       "contact": {
-        "CONTENT": "Shared contact"
+        "CONTENT": "Paylaşılan kişi"
       },
       "embed": {
-        "CONTENT": "Embedded content"
+        "CONTENT": "Gömülü içerik"
       }
     },
     "CHAT_SORT_BY_FILTER": {
@@ -145,7 +145,7 @@
     "HIDE_QUOTED_TEXT": "Alıntı Yapılan Mesajı Gizle",
     "SHOW_QUOTED_TEXT": "Alıntı Yapılan Mesajı Göster",
     "MESSAGE_READ": "Oku",
-    "SENDING": "Sending",
+    "SENDING": "Gönderiliyor",
     "UNREAD_COUNT_OVERFLOW": "9+"
   }
 }
