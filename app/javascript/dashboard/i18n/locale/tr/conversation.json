@@ -267,7 +267,9 @@
         "REMOVE_PREVIEW": "Alıntılanan e-posta zincirini kaldır",
         "COLLAPSE": "Önizlemeyi daralt",
         "EXPAND": "Önizlemeyi genişlet"
-      }
+      },
+      "MORE_ACTIONS": "Diğer işlemler",
+      "CONTENT_TEMPLATES": "İçerik şablonları"
     },
     "VISIBLE_TO_AGENTS": "Özel Not: Yalnızca siz ve ekibiniz tarafından görülebilir",
     "CHANGE_STATUS": "Görüşme durumu değişti",

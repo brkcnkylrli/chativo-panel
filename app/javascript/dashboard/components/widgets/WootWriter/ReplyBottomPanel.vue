@@ -11,10 +11,22 @@ import VideoCallButton from '../VideoCallButton.vue';
 import { INBOX_TYPES } from 'dashboard/helper/inbox';
 import { mapGetters } from 'vuex';
 import NextButton from 'dashboard/components-next/button/Button.vue';
+import {
+  DropdownContainer,
+  DropdownBody,
+  DropdownItem,
+} from 'dashboard/components-next/dropdown-menu/base';
 
 export default {
   name: 'ReplyBottomPanel',
-  components: { NextButton, FileUpload, VideoCallButton },
+  components: {
+    NextButton,
+    FileUpload,
+    VideoCallButton,
+    DropdownContainer,
+    DropdownBody,
+    DropdownItem,
+  },
   mixins: [inboxMixin],
   props: {
     isNote: {
@@ -255,6 +267,22 @@ export default {
     isFetchingAppIntegrations() {
       return this.uiFlags.isFetching;
     },
+    showVideoCallButton() {
+      return (
+        (this.isAWebWidgetInbox || this.isAPIInbox) &&
+        !this.isOnPrivateNote &&
+        !this.isEditorDisabled
+      );
+    },
+    hasSecondaryActions() {
+      return Boolean(
+        this.showMessageSignatureButton ||
+          this.showQuotedReplyToggle ||
+          this.enableContentTemplates ||
+          this.enableInsertArticleInReply ||
+          this.showVideoCallButton
+      );
+    },
     quotedReplyToggleTooltip() {
       return this.quotedReplyEnabled
         ? this.$t('CONVERSATION.REPLYBOX.QUOTED_REPLY.DISABLE_TOOLTIP')
@@ -331,25 +359,6 @@ export default {
         @click="toggleAudioRecorderPlayPause"
       />
       <NextButton
-        v-if="showMessageSignatureButton"
-        v-tooltip.top-end="signatureToggleTooltip"
-        icon="i-ph-signature"
-        slate
-        faded
-        sm
-        @click="toggleMessageSignature"
-      />
-      <NextButton
-        v-if="showQuotedReplyToggle"
-        v-tooltip.top-end="quotedReplyToggleTooltip"
-        icon="i-ph-quotes"
-        :variant="quotedReplyEnabled ? 'solid' : 'faded'"
-        color="slate"
-        sm
-        :aria-pressed="quotedReplyEnabled"
-        @click="$emit('toggleQuotedReply')"
-      />
-      <NextButton
         v-if="enableWhatsAppTemplates"
         v-tooltip.top-end="$t('CONVERSATION.FOOTER.WHATSAPP_TEMPLATES')"
         icon="i-ph-whatsapp-logo"
@@ -358,23 +367,58 @@ export default {
         sm
         @click="$emit('selectWhatsappTemplate')"
       />
-      <NextButton
-        v-if="enableContentTemplates"
-        v-tooltip.top-end="'Content Templates'"
-        icon="i-ph-whatsapp-logo"
-        slate
-        faded
-        sm
-        @click="$emit('selectContentTemplate')"
-      />
-      <VideoCallButton
-        v-if="
-          (isAWebWidgetInbox || isAPIInbox) &&
-          !isOnPrivateNote &&
-          !isEditorDisabled
-        "
-        :conversation-id="conversationId"
-      />
+      <!-- Everything that is not used on every single reply sits behind one
+           menu, so the row stays readable. The WhatsApp template button is
+           deliberately kept outside: outside the 24 hour window it is the only
+           way to answer at all. -->
+      <DropdownContainer v-if="hasSecondaryActions">
+        <template #trigger="{ toggle, isOpen }">
+          <NextButton
+            v-tooltip.top-end="$t('CONVERSATION.REPLYBOX.MORE_ACTIONS')"
+            icon="i-lucide-ellipsis"
+            slate
+            faded
+            sm
+            :aria-label="$t('CONVERSATION.REPLYBOX.MORE_ACTIONS')"
+            :class="{ '!bg-n-alpha-2': isOpen }"
+            @click="toggle"
+          />
+        </template>
+        <DropdownBody
+          class="bottom-10 z-50 mb-2 min-w-52 ltr:left-0 rtl:right-0"
+        >
+          <DropdownItem
+            v-if="showMessageSignatureButton"
+            :label="signatureToggleTooltip"
+            icon="i-ph-signature"
+            :click="toggleMessageSignature"
+          />
+          <DropdownItem
+            v-if="showQuotedReplyToggle"
+            :label="quotedReplyToggleTooltip"
+            icon="i-ph-quotes"
+            :click="() => $emit('toggleQuotedReply')"
+          />
+          <DropdownItem
+            v-if="enableContentTemplates"
+            :label="$t('CONVERSATION.REPLYBOX.CONTENT_TEMPLATES')"
+            icon="i-ph-whatsapp-logo"
+            :click="() => $emit('selectContentTemplate')"
+          />
+          <DropdownItem
+            v-if="enableInsertArticleInReply"
+            :label="$t('HELP_CENTER.ARTICLE_SEARCH.OPEN_ARTICLE_SEARCH')"
+            icon="i-ph-article-ny-times"
+            :click="toggleInsertArticle"
+          />
+          <DropdownItem v-if="showVideoCallButton" class="!p-0">
+            <VideoCallButton
+              :conversation-id="conversationId"
+              class="w-full"
+            />
+          </DropdownItem>
+        </DropdownBody>
+      </DropdownContainer>
       <transition name="modal-fade">
         <div
           v-show="uploadRef && uploadRef.dropActive"
@@ -386,15 +430,6 @@ export default {
           </h4>
         </div>
       </transition>
-      <NextButton
-        v-if="enableInsertArticleInReply"
-        v-tooltip.top-end="$t('HELP_CENTER.ARTICLE_SEARCH.OPEN_ARTICLE_SEARCH')"
-        icon="i-ph-article-ny-times"
-        slate
-        faded
-        sm
-        @click="toggleInsertArticle"
-      />
     </div>
     <div class="right-wrap">
       <!-- Round icon button instead of a labelled one: the label repeated the
