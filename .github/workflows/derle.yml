@@ -1,25 +1,11 @@
 name: Panel imajini derle
 
-# Neden GitHub'da derliyoruz: sunucunun 7.6 GB RAM'inin yalnizca 2.7'si bos ve
-# Chatwoot derlemesi bundan fazlasini istiyor. Canli sistemin yaninda derleme
-# yapmak paneli de riske atardi.
 on:
   push:
     branches: [main]
-    # Belgeler degisince derleme baslatmiyoruz; derleme 30+ dakika suruyor.
     paths-ignore:
       - '**.md'
-      - 'docs/**'
   workflow_dispatch:
-
-concurrency:
-  # Ust uste itilen commit'lerde eskisini iptal et: iki derleme ayni anda
-  # kosarsa hem kuyruk uzuyor hem hangi imajin son oldugu belirsizlesiyor.
-  group: derleme-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  IMAJ: ghcr.io/${{ github.repository_owner }}/chativo-panel
 
 jobs:
   derle:
@@ -33,69 +19,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Lisans denetimi
-        # enterprise/ dizini Chatwoot Enterprise License altinda ve uretimde
-        # kullanimi abonelik istiyor. Fork'ta silindi; upstream birlestirmesi
-        # onu geri getirirse derleme burada durmali, sessizce imaja girmemeli.
         run: |
           if [ -d enterprise ]; then
-            echo "::error::enterprise/ dizini geri gelmis. Birlestirmede silinmeli."
+            echo "::error::enterprise/ dizini geri gelmis"
             exit 1
           fi
           echo "enterprise/ yok - kurulum bastan sona MIT"
 
       - name: Disk ac
-        # Chatwoot imaji ~2.9 GB ve derleme ara katmanlariyla birlikte varsayilan
-        # runner diskini zorluyor. Kullanilmayan SDK'lari atmak birkac GB aciyor.
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
           df -h / | tail -1
-
-      - name: Buildx hazirla
-        uses: docker/setup-buildx-action@v3
-
-      - name: ghcr girisi
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Etiketleri belirle
-        id: etiket
-        run: |
-          echo "kisa=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-          echo "tarih=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
-
-      - name: Derle ve gonder
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: docker/Dockerfile
-          push: true
-          # `latest` her zaman son derlemeyi gosterir; commit etiketi ise geri
-          # donus icin duruyor. Panel bozulursa sunucuda tek satir degistirip
-          # onceki commit etiketine donuluyor.
-          tags: |
-            ${{ env.IMAJ }}:latest
-            ${{ env.IMAJ }}:${{ steps.etiket.outputs.tarih }}-${{ steps.etiket.outputs.kisa }}
-          # Katman onbellegi: ilk derleme uzun, sonrakiler yalnizca degisen
-          # katmanlari yeniden kuruyor.
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            BUNDLE_WITHOUT=development:test
-
-      - name: Ozet
-        run: |
-          {
-            echo "### Imaj hazir"
-            echo ""
-            echo '```'
-            echo "${{ env.IMAJ }}:${{ steps.etiket.outputs.tarih }}-${{ steps.etiket.outputs.kisa }}"
-            echo '```'
-            echo ""
-            echo "Sunucuda cekmek icin:"
-            echo '```bash'
-            echo "cd /opt/chatwoot && docker compose pull rails sidekiq && docker compose up -d"
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
