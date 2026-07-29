@@ -28,7 +28,6 @@ const {
   resolveFeatureFlag,
   isAllowed,
   isCollapsed,
-  isResizing,
 } = useSidebarContext();
 
 const {
@@ -76,12 +75,6 @@ const closePopover = () => {
   if (activePopover.value === props.name) {
     closeActivePopover();
   }
-};
-
-const handleMouseEnter = () => {
-  if (!hasChildren.value || isResizing.value) return;
-  cancelClose();
-  openPopover();
 };
 
 const handleMouseLeave = () => {
@@ -197,10 +190,24 @@ const hasActiveChild = computed(() => {
   return activeChild.value !== undefined;
 });
 
+// On the rail the sub items live in a popover that opens on click, not on
+// hover: with labels under the icons a hover menu fires while the pointer is
+// only passing through the rail.
 const handleCollapsedClick = () => {
-  if (hasChildren.value && hasAccessibleChildren.value) {
-    const firstItem = accessibleItems.value[0];
-    router.push(firstItem.to);
+  if (!hasChildren.value || !hasAccessibleChildren.value) return;
+
+  if (isPopoverOpen.value) {
+    closePopover();
+    return;
+  }
+
+  cancelClose();
+  openPopover();
+
+  // Only jump to the first child when we are not already inside this group,
+  // otherwise clicking the group would throw away the open conversation.
+  if (!hasActiveChild.value) {
+    router.push(accessibleItems.value[0].to);
   }
 };
 
@@ -253,25 +260,24 @@ watch(
   >
     <!-- Collapsed State -->
     <template v-if="isCollapsed">
-      <div
-        class="relative"
-        @mouseenter="handleMouseEnter"
-        @mouseleave="handleMouseLeave"
-      >
+      <div class="relative" @mouseleave="handleMouseLeave">
         <component
           :is="to && !hasChildren ? 'router-link' : 'button'"
           ref="triggerRef"
           :to="to && !hasChildren ? to : undefined"
           type="button"
-          class="flex items-center justify-center size-10 rounded-lg"
+          class="flex flex-col gap-1 items-center px-1 py-1.5 w-full rounded-lg"
           :class="{
-            'text-n-slate-12 bg-n-alpha-2': isActive || hasActiveChild,
+            'text-n-slate-12 bg-n-alpha-3': isActive || hasActiveChild,
             'text-n-slate-11 hover:bg-n-alpha-2': !isActive && !hasActiveChild,
           }"
           :title="label"
-          @click="hasChildren ? handleCollapsedClick() : undefined"
+          @click="handleCollapsedClick"
         >
-          <Icon v-if="icon" :icon="icon" class="size-4" />
+          <Icon v-if="icon" :icon="icon" class="size-5" />
+          <span class="w-full leading-tight text-center text-xxs line-clamp-2">
+            {{ label }}
+          </span>
         </component>
         <SidebarCollapsedPopover
           v-if="hasChildren && isPopoverOpen"

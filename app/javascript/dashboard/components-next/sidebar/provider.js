@@ -5,8 +5,13 @@ import { useUISettings } from 'dashboard/composables/useUISettings';
 
 const SidebarControl = Symbol('SidebarControl');
 
-const DEFAULT_WIDTH = 200;
-const MIN_WIDTH = 56;
+// Collapsed sidebar is a labelled rail: the icon sits above a small caption,
+// so it needs more room than the 56px icon-only rail upstream ships with.
+const RAIL_WIDTH = 72;
+const EXPANDED_WIDTH = 200;
+// New users land on the rail; dragging the handle still opens the tree view.
+const DEFAULT_WIDTH = RAIL_WIDTH;
+const MIN_WIDTH = RAIL_WIDTH;
 const COLLAPSED_THRESHOLD = 160;
 const MAX_WIDTH = 320;
 
@@ -14,10 +19,17 @@ const MAX_WIDTH = 320;
 const activePopover = ref(null);
 let globalCloseTimeout = null;
 
+// Deliberately not `sidebar_width`: accounts that had dragged the old sidebar
+// carry a stored width, and reading it would keep them on the tree view and
+// hide the rail entirely. The new key starts everyone on the rail once.
+const WIDTH_SETTING_KEY = 'sidebar_width_rail';
+
 export function useSidebarResize() {
   const { uiSettings, updateUISettings } = useUISettings();
 
-  const sidebarWidth = ref(uiSettings.value.sidebar_width || DEFAULT_WIDTH);
+  const sidebarWidth = ref(
+    uiSettings.value[WIDTH_SETTING_KEY] || DEFAULT_WIDTH
+  );
   const isCollapsed = computed(() => sidebarWidth.value < COLLAPSED_THRESHOLD);
 
   const setSidebarWidth = width => {
@@ -25,17 +37,17 @@ export function useSidebarResize() {
   };
 
   const saveWidth = () => {
-    updateUISettings({ sidebar_width: sidebarWidth.value });
+    updateUISettings({ [WIDTH_SETTING_KEY]: sidebarWidth.value });
   };
 
   const snapToCollapsed = () => {
     sidebarWidth.value = MIN_WIDTH;
-    updateUISettings({ sidebar_width: MIN_WIDTH });
+    updateUISettings({ [WIDTH_SETTING_KEY]: MIN_WIDTH });
   };
 
   const snapToExpanded = () => {
-    sidebarWidth.value = DEFAULT_WIDTH;
-    updateUISettings({ sidebar_width: DEFAULT_WIDTH });
+    sidebarWidth.value = EXPANDED_WIDTH;
+    updateUISettings({ [WIDTH_SETTING_KEY]: EXPANDED_WIDTH });
   };
 
   return {
@@ -49,6 +61,8 @@ export function useSidebarResize() {
     MAX_WIDTH,
     COLLAPSED_THRESHOLD,
     DEFAULT_WIDTH,
+    RAIL_WIDTH,
+    EXPANDED_WIDTH,
   };
 }
 
