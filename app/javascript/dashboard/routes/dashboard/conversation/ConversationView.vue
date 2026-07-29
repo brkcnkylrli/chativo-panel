@@ -94,7 +94,9 @@ export default {
       }
 
       const { is_contact_sidebar_open: isContactSidebarOpen } = this.uiSettings;
-      return isContactSidebarOpen;
+      // Undefined means the agent has never touched the toggle: show the
+      // customer summary by default. An explicit false still keeps it closed.
+      return isContactSidebarOpen ?? true;
     },
   },
   watch: {

@@ -19,7 +19,9 @@ const { width: windowWidth } = useWindowSize();
 const activeTab = computed(() => {
   const { is_contact_sidebar_open: isContactSidebarOpen } = uiSettings.value;
 
-  if (isContactSidebarOpen) {
+  // Undefined means the agent has never touched the toggle: show the customer
+  // summary by default. An explicit false still keeps it closed.
+  if (isContactSidebarOpen ?? true) {
     return 0;
   }
   return null;

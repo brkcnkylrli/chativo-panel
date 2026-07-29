@@ -266,17 +266,27 @@ watch(
           ref="triggerRef"
           :to="to && !hasChildren ? to : undefined"
           type="button"
-          class="flex flex-col gap-1 items-center px-1 py-1.5 w-full rounded-lg"
+          class="flex group flex-col gap-1 items-center px-1 py-1.5 w-full rounded-lg"
           :class="{
-            'text-n-slate-12 bg-n-alpha-3': isActive || hasActiveChild,
-            'text-n-slate-11 hover:bg-n-alpha-2': !isActive && !hasActiveChild,
+            'text-n-slate-12': isActive || hasActiveChild,
+            'text-n-slate-11 hover:bg-n-alpha-1': !isActive && !hasActiveChild,
           }"
           :title="label"
           @click="handleCollapsedClick"
         >
-          <Icon v-if="icon" :icon="icon" class="size-5" />
+          <span
+            class="grid place-content-center rounded-lg transition-colors duration-150 ease-out size-8"
+            :class="
+              isActive || hasActiveChild
+                ? 'bg-n-brand text-white'
+                : 'group-hover:bg-n-alpha-2'
+            "
+          >
+            <Icon v-if="icon" :icon="icon" class="size-5" />
+          </span>
           <span
             class="w-full leading-tight text-center break-words text-xxs line-clamp-2"
+            :class="{ 'font-medium': isActive || hasActiveChild }"
           >
             {{ label }}
           </span>
