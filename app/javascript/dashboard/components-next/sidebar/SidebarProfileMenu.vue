@@ -69,6 +69,19 @@ const menuItems = computed(() => {
       },
     },
     {
+      // Chativo: musteri numarasini baglamadan panele girebiliyor ve QR
+      // sayfasina giden baglanti yalnizca hos geldin e-postasindaydi. O
+      // e-postayi bulamayan musterinin numarasini baglayacak hicbir yolu
+      // kalmiyordu; burasi panelden gorunur cikis.
+      show: true,
+      showOnCustomBrandedInstance: true,
+      label: t('SIDEBAR_ITEMS.WHATSAPP_KURULUM'),
+      icon: 'i-lucide-qr-code',
+      link: 'https://chativo.tr/baglan',
+      nativeLink: true,
+      target: '_blank',
+    },
+    {
       show: true,
       showOnCustomBrandedInstance: true,
       label: t('SIDEBAR_ITEMS.PROFILE_SETTINGS'),

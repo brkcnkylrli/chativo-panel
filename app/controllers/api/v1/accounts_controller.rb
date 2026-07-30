@@ -1,4 +1,5 @@
 class Api::V1::AccountsController < Api::BaseController
+  include ChativoApiAccess
   include AuthHelper
   include CacheKeysHelper
 
@@ -107,9 +108,9 @@ class Api::V1::AccountsController < Api::BaseController
   end
 
   def validate_token_api_access
-    return if @account.api_and_webhooks_enabled?
+    return if chativo_api_access_allowed?(@account)
 
-    render json: { error: 'API access is not enabled for this account' }, status: :forbidden
+    render_api_access_disabled
   end
 
   def account_params

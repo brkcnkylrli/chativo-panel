@@ -241,6 +241,7 @@
     }
   },
   "SIDEBAR_ITEMS": {
+    "WHATSAPP_KURULUM": "WhatsApp numaram",
     "CHANGE_AVAILABILITY_STATUS": "Durumu Değiştir",
     "CHANGE_ACCOUNTS": "Hesap değiştir",
     "SWITCH_ACCOUNT": "Hesap değiştir",
