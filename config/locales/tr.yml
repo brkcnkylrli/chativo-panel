@@ -101,6 +101,7 @@ tr:
       data_type:
         invalid: Hatalı veri türü
     contacts:
+      limit_reached: "Planınız %{limit} kişiye izin veriyor. Daha fazlası için planınızı yükseltin."
       import:
         failed: Dosya boş
       export:
@@ -152,6 +153,7 @@ tr:
     openai:
       invalid_api_key: 'OpenAI API key is invalid or revoked. Please check your key in your OpenAI dashboard.'
     inboxes:
+      limit_reached: "Planınız %{limit} gelen kutusuna izin veriyor. Daha fazlası için planınızı yükseltin."
       imap:
         socket_error: Lütfen ağ bağlantınızı, IMAP adresini kontrol edin ve tekrar deneyin.
         no_response_error: Lütfen IMAP erişim bilgilerinizi kontrol edip tekrar deneyin.
@@ -194,6 +196,8 @@ tr:
       no_payment_method: No payment methods found. Please add a payment method before making a purchase.
     reports:
       date_range_too_long: Date range cannot exceed 6 months
+    storage:
+      limit_reached: "Planınızın dosya alanı doldu (%{limit}). Eski dosyaları silin ya da planınızı yükseltin."
   profile:
     mfa:
       enabled: MFA başarıyla etkinleştirildi

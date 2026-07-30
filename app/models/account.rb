@@ -147,15 +147,58 @@ class Account < ApplicationRecord
     super.presence || ENV.fetch('MAILER_SENDER_EMAIL') { GlobalConfig.get('MAILER_SUPPORT_EMAIL')['MAILER_SUPPORT_EMAIL'] }
   end
 
+  # Chativo plan sinirlari.
+  #
+  # Degerler `limits` jsonb kolonundan geliyor; oraya Chativo koprusu Platform
+  # API ile yaziyor (musteri plani degistiginde). Kolon bos ise sinir yok
+  # sayilir: elle acilmis yonetim hesaplarini kilitlemesin.
+  #
+  # Bu metot upstream'de `ChatwootApp.max_limit` (100.000) donuyordu, yani
+  # pratikte sinirsizdi. Enterprise katmani bunu ezip plana bagliyordu ama o
+  # katman lisans gerekcesiyle silindi; sinirin kendisi burada yasiyor.
   def usage_limits
     {
-      agents: ChatwootApp.max_limit.to_i,
-      inboxes: ChatwootApp.max_limit.to_i
+      agents: chativo_limit('agents'),
+      inboxes: chativo_limit('inboxes'),
+      contacts: chativo_limit('contacts'),
+      storage_bytes: chativo_limit('storage_bytes')
     }
   end
 
+  # API token'i ve giden webhook'lar bu hesap icin acik mi.
+  #
+  # `Api::V1::Accounts::BaseController` ve `WebhookListener` bu metoda bakiyor.
+  # Upstream her zaman `true` donuyordu; API token'i hiz limiti olmayan bir kapi
+  # oldugu icin plana bagli.
+  #
+  # Panel oturumu (cerez) bundan etkilenmez: kontrol yalnizca token ile gelen
+  # isteklerde calisiyor, yani musteri panelini normal kullanmaya devam eder.
   def api_and_webhooks_enabled?
-    true
+    return true if custom_attributes['api_enabled'].nil?
+
+    ActiveModel::Type::Boolean.new.cast(custom_attributes['api_enabled']) || false
+  end
+
+  # Hesabin ek dosyalarinin toplam boyutu (bayt).
+  #
+  # Dosyalar yerel diskte duruyor ve disk tum musteriler arasinda paylasiliyor;
+  # sinirsiz yukleme tek bir hesabin sunucuyu doldurmasi demek.
+  #
+  # Tam toplami her yuklemede hesaplamak pahali oldugu icin bes dakika
+  # onbellekleniyor. Sinirin bir miktar asilabilmesi kabul edilebilir: amac
+  # kurus hesabi degil, diskin dolmasini engellemek.
+  def chativo_storage_used
+    Rails.cache.fetch("chativo_storage_used_#{id}", expires_in: 5.minutes) do
+      ActiveStorage::Blob.joins(:attachments)
+                         .where(active_storage_attachments: { record_type: 'Attachment' })
+                         .where(active_storage_attachments: { record_id: Attachment.where(account_id: id).select(:id) })
+                         .sum(:byte_size)
+    end
+  end
+
+  # Sinirin dolup dolmadigini soyler. Sinirsizda hicbir zaman true donmez.
+  def chativo_limit_reached?(key, current_count)
+    current_count >= usage_limits[key.to_sym].to_i
   end
 
   def locale_english_name
@@ -199,6 +242,31 @@ class Account < ApplicationRecord
 
   def validate_limit_keys
     # method overridden in enterprise module
+  end
+
+  # Sinirsizin sayisal karsiligi.
+  #
+  # `usage_limits` cikti degerleri Chatwoot'un kendi hesaplarinda dogrudan
+  # kullaniliyor (ornegin `available_agent_count` = limit - mevcut). Oraya 0
+  # dondurmek "sifir koltuk" anlamina gelir ve **sinirsiz hesaplari kilitler**;
+  # bu yuzden sinirsiz, buyuk bir sayiyla ifade ediliyor.
+  #
+  # Depolama ayri: `max_limit` 100.000, yani 100 KB. Bayt alaninda o deger
+  # sinirsiz degil, neredeyse sifir olurdu.
+  CHATIVO_UNLIMITED = {
+    'storage_bytes' => 1_000_000_000_000 # 1 TB - pratikte sinirsiz
+  }.freeze
+
+  # `limits` icindeki bir degeri okur.
+  #
+  # Bos ya da 0 "sinirsiz" demek. Bilincli olarak gevsek taraf: sinir
+  # yazilamamis bir hesabi kilitlemek calisan bir musteriyi durdurur, oysa
+  # yazilamama durumu koprude zaten uyari uretiyor.
+  def chativo_limit(key)
+    value = limits[key]
+    return CHATIVO_UNLIMITED.fetch(key, ChatwootApp.max_limit.to_i) if value.blank? || value.to_i.zero?
+
+    value.to_i
   end
 
   def validate_reporting_timezone

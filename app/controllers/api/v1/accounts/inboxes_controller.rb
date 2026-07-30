@@ -4,6 +4,7 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   before_action :fetch_agent_bot, only: [:set_agent_bot]
   # we are already handling the authorization in fetch inbox
   before_action :check_authorization, except: [:show]
+  before_action :check_inbox_limit, only: [:create]
 
   include Api::V1::Accounts::Concerns::WhatsappHealthManagement
 
@@ -96,6 +97,19 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
 
   def fetch_agent_bot
     @agent_bot = AgentBot.accessible_to(Current.account).find(params[:agent_bot]) if params[:agent_bot]
+  end
+
+  # Chativo plan siniri.
+  #
+  # `usage_limits[:inboxes]` upstream'de tanimliydi ama hicbir yerde kontrol
+  # edilmiyordu; musteri istedigi kadar gelen kutusu acabiliyordu. Her gelen
+  # kutusu bizim tarafta webhook, kaynak ve depolama demek.
+  def check_inbox_limit
+    return unless Current.account.chativo_limit_reached?(:inboxes, Current.account.inboxes.count)
+
+    render json: {
+      error: I18n.t('errors.inboxes.limit_reached', limit: Current.account.usage_limits[:inboxes])
+    }, status: :unprocessable_entity
   end
 
   def create_channel

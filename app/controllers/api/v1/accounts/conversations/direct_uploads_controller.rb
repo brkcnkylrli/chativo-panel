@@ -13,6 +13,7 @@ class Api::V1::Accounts::Conversations::DirectUploadsController < ActiveStorage:
   before_action :current_account
   before_action :validate_token_api_access, if: :authenticate_by_access_token?
   before_action :conversation
+  before_action :validate_storage_limit
 
   def create
     return if @conversation.nil? || @current_account.nil?
@@ -30,6 +31,19 @@ class Api::V1::Accounts::Conversations::DirectUploadsController < ActiveStorage:
     return if Current.account.api_and_webhooks_enabled?
 
     render json: { error: 'API access is not enabled for this account' }, status: :forbidden
+  end
+
+  # Chativo plan siniri.
+  #
+  # Yalnizca temsilcinin panelden yaptigi yuklemeler kontrol ediliyor; musteriden
+  # **gelen** medya bu uctan gecmiyor ve bilincli olarak engellenmiyor - gelen bir
+  # fotografi reddetmek mesaji kaybetmek olur.
+  def validate_storage_limit
+    return if Current.account.nil?
+    return unless Current.account.chativo_limit_reached?(:storage_bytes, Current.account.chativo_storage_used)
+
+    limit = ActiveSupport::NumberHelper.number_to_human_size(Current.account.usage_limits[:storage_bytes])
+    render json: { error: I18n.t('errors.storage.limit_reached', limit: limit) }, status: :unprocessable_entity
   end
 
   def conversation

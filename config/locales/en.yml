@@ -117,6 +117,7 @@ en:
       data_type:
         invalid: Invalid data type
     contacts:
+      limit_reached: "Your plan allows %{limit} contacts. Upgrade your plan to add more."
       import:
         failed: File is blank
       export:
@@ -169,6 +170,7 @@ en:
     openai:
       invalid_api_key: 'OpenAI API key is invalid or revoked. Please check your key in your OpenAI dashboard.'
     inboxes:
+      limit_reached: "Your plan allows %{limit} inbox(es). Upgrade your plan to add more."
       imap:
         socket_error: Please check the network connection, IMAP address and try again.
         no_response_error: Please check the IMAP credentials and try again.
@@ -211,6 +213,8 @@ en:
       no_payment_method: No payment methods found. Please add a payment method before making a purchase.
     reports:
       date_range_too_long: Date range cannot exceed 6 months
+    storage:
+      limit_reached: "Your plan's file storage is full (%{limit}). Delete old files or upgrade your plan."
   profile:
     mfa:
       enabled: MFA enabled successfully

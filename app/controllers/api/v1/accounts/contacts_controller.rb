@@ -12,6 +12,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
   RESULTS_PER_PAGE = 15
 
   before_action :check_authorization
+  before_action :check_contact_limit, only: [:create, :import]
   before_action :set_current_page, only: [:index, :active, :search, :filter]
   before_action :fetch_contact, only: [:show, :update, :destroy, :avatar, :contactable_inboxes, :destroy_custom_attributes]
   before_action :set_include_contact_inboxes, only: [:index, :active, :search, :filter, :show, :update]
@@ -115,6 +116,21 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
   end
 
   private
+
+  # Chativo plan siniri.
+  #
+  # Yalnizca **elle ekleme ve ice aktarma** kontrol ediliyor; gelen mesajla
+  # kendiliginden olusan kisiler (`ContactInboxWithContactBuilder`) bu kapidan
+  # gecmiyor. Bilincli: musteriye yazan birinin kaydi olusturulamazsa mesaj
+  # kaybolur - sinir asilmis olmasi musterinin isini durdurmamali. Suistimalin
+  # asil yolu zaten toplu ice aktarma.
+  def check_contact_limit
+    return unless Current.account.chativo_limit_reached?(:contacts, Current.account.contacts.count)
+
+    render json: {
+      error: I18n.t('errors.contacts.limit_reached', limit: Current.account.usage_limits[:contacts])
+    }, status: :unprocessable_entity
+  end
 
   # TODO: Move this to a finder class
   def resolved_contacts
