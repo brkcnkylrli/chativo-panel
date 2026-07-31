@@ -88,9 +88,6 @@ export default {
     },
   },
   watch: {
-    $route() {
-      this.closeMobileSidebar();
-    },
     isSmallScreen: {
       handler() {
         const { LAYOUT_TYPES } = wootConstants;
@@ -165,6 +162,7 @@ export default {
         <CopilotContainer />
         <MobileBottomNav
           @toggle-sidebar="toggleMobileSidebar"
+          @close-sidebar="closeMobileSidebar"
           @open-key-shortcut-modal="toggleKeyShortcutModal"
         />
         <FloatingCallWidget v-if="hasActiveCall || hasIncomingCall" />

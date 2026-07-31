@@ -19,7 +19,7 @@ import { useAccount } from 'dashboard/composables/useAccount';
 import { useI18n } from 'vue-i18n';
 import SidebarProfileMenu from './SidebarProfileMenu.vue';
 
-const emit = defineEmits(['toggleSidebar', 'openKeyShortcutModal']);
+const emit = defineEmits(['toggleSidebar', 'closeSidebar', 'openKeyShortcutModal']);
 
 const { accountScopedRoute } = useAccount();
 const route = useRoute();
@@ -76,7 +76,12 @@ const etkinMi = bolum => {
 <template>
   <nav v-if="!konusmaAcik" class="chativo-alt-cubuk">
     <!-- Menu: sol menudeki her sey - kanallar, etiketler, hesap ayarlari. -->
-    <button type="button" class="chativo-alt-oge" @click="emit('toggleSidebar')">
+    <button
+      id="mobile-sidebar-launcher"
+      type="button"
+      class="chativo-alt-oge"
+      @click="emit('toggleSidebar')"
+    >
       <span class="chativo-alt-ikon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
           <path d="M4 6h16M4 12h16M4 18h16" />
@@ -91,6 +96,7 @@ const etkinMi = bolum => {
       :to="bolum.hedef"
       class="chativo-alt-oge"
       :class="{ 'chativo-alt-etkin': etkinMi(bolum) }"
+      @click="emit('closeSidebar')"
     >
       <span class="chativo-alt-ikon">
         <svg
@@ -140,14 +146,14 @@ const etkinMi = bolum => {
  */
 .chativo-alt-cubuk {
   position: fixed;
-  z-index: 40;
+  z-index: 45;
   bottom: max(12px, env(safe-area-inset-bottom));
   left: 10px;
   right: 10px;
   display: flex;
   gap: 2px;
   align-items: stretch;
-  padding: 9px 6px 8px;
+  padding: 10px 6px 9px;
   background: rgb(22 24 29 / 62%);
   border: 1px solid rgb(255 255 255 / 9%);
   border-radius: 26px;
@@ -199,14 +205,14 @@ const etkinMi = bolum => {
 
 .chativo-alt-ikon svg {
   display: block;
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
 }
 
 .chativo-alt-etiket {
   max-width: 100%;
   overflow: hidden;
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.01em;
@@ -217,7 +223,7 @@ const etkinMi = bolum => {
 .chativo-alt-sayac {
   position: absolute;
   top: -3px;
-  inset-inline-start: 12px;
+  inset-inline-start: 14px;
   box-sizing: content-box;
   min-width: 15px;
   height: 15px;
