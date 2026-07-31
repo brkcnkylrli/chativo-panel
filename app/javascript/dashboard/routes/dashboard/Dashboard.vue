@@ -162,12 +162,11 @@ export default {
         <router-view />
         <CommandBar />
         <CopilotLauncher />
-        <MobileSidebarLauncher
-          :is-mobile-sidebar-open="isMobileSidebarOpen"
-          @toggle="toggleMobileSidebar"
-        />
         <CopilotContainer />
-        <MobileBottomNav />
+        <MobileBottomNav
+          @toggle-sidebar="toggleMobileSidebar"
+          @open-key-shortcut-modal="toggleKeyShortcutModal"
+        />
         <FloatingCallWidget v-if="hasActiveCall || hasIncomingCall" />
       </template>
       <AddAccountModal
