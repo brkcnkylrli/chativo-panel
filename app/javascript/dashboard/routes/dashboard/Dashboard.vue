@@ -24,6 +24,7 @@ import CopilotLauncher from 'dashboard/components-next/copilot/CopilotLauncher.v
 import CopilotContainer from 'dashboard/components/copilot/CopilotContainer.vue';
 
 import MobileSidebarLauncher from 'dashboard/components-next/sidebar/MobileSidebarLauncher.vue';
+import MobileBottomNav from 'dashboard/components-next/sidebar/MobileBottomNav.vue';
 import { useCallsStore } from 'dashboard/stores/calls';
 
 export default {
@@ -37,6 +38,7 @@ export default {
     CopilotContainer,
     FloatingCallWidget,
     MobileSidebarLauncher,
+    MobileBottomNav,
   },
   setup() {
     const upgradePageRef = ref(null);
@@ -86,6 +88,9 @@ export default {
     },
   },
   watch: {
+    $route() {
+      this.closeMobileSidebar();
+    },
     isSmallScreen: {
       handler() {
         const { LAYOUT_TYPES } = wootConstants;
@@ -162,6 +167,7 @@ export default {
           @toggle="toggleMobileSidebar"
         />
         <CopilotContainer />
+        <MobileBottomNav />
         <FloatingCallWidget v-if="hasActiveCall || hasIncomingCall" />
       </template>
       <AddAccountModal
