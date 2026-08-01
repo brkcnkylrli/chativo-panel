@@ -1,4 +1,5 @@
 class Api::V1::Accounts::Conversations::DirectUploadsController < ActiveStorage::DirectUploadsController
+  include ChativoApiAccess
   include DeviseTokenAuth::Concerns::SetUserByToken
   include RequestExceptionHandler
   include AccessTokenAuthHelper
@@ -28,9 +29,9 @@ class Api::V1::Accounts::Conversations::DirectUploadsController < ActiveStorage:
   end
 
   def validate_token_api_access
-    return if Current.account.api_and_webhooks_enabled?
+    return if chativo_api_access_allowed?(Current.account)
 
-    render json: { error: 'API access is not enabled for this account' }, status: :forbidden
+    render_api_access_disabled
   end
 
   # Chativo plan siniri.

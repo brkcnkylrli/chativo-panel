@@ -1,5 +1,5 @@
 <script setup>
-import { h, ref, computed, onMounted, watch } from 'vue';
+import { provide, h, ref, computed, onMounted, watch } from 'vue';
 import { provideSidebarContext, useSidebarResize } from './provider';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useConfig } from 'dashboard/composables/useConfig';
@@ -15,6 +15,7 @@ import { useWindowSize } from '@vueuse/core';
 import Button from 'dashboard/components-next/button/Button.vue';
 import SidebarGroup from './SidebarGroup.vue';
 import SidebarProfileMenu from './SidebarProfileMenu.vue';
+import SidebarAsistanim from './SidebarAsistanim.vue';
 import SidebarChangelogCard from './SidebarChangelogCard.vue';
 import SidebarChangelogButton from './SidebarChangelogButton.vue';
 import ChannelLeaf from './ChannelLeaf.vue';
@@ -275,6 +276,11 @@ const closeMobileSidebar = () => {
   if (!props.isMobileSidebarOpen) return;
   emit('closeMobileSidebar');
 };
+
+// Yapraklar (gercek sayfa baglantilari) dokunuldugunda menuyu kapatiyor.
+// Grup basliklari kapatmiyor: onlar bir bolume gitmekle kalmiyor, alt
+// menuyu de aciyorlar ve menu kapanirsa acilan sey gorunmuyor.
+provide('mobilMenuyuKapat', closeMobileSidebar);
 
 const newReportRoutes = () => [
   {
@@ -891,7 +897,7 @@ const menuItems = computed(() => {
         ],
       },
     ]"
-    class="bg-n-sidebar flex flex-col text-sm pb-px fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak"
+    class="bg-n-sidebar flex flex-col text-sm pb-[76px] md:pb-px fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak"
     :class="[
       {
         'shadow-lg md:shadow-none': isMobileSidebarOpen,
@@ -1016,6 +1022,9 @@ const menuItems = computed(() => {
           {{ t('SIDEBAR.COLLAPSE_MENU') }}
         </span>
       </button>
+      <div class="px-1 flex-shrink-0">
+        <SidebarAsistanim :is-collapsed="isEffectivelyCollapsed" />
+      </div>
       <div
         class="px-1 py-1.5 flex-shrink-0 flex w-full z-50 gap-2 items-center border-t border-n-weak shadow-[0px_-2px_4px_0px_rgba(27,28,29,0.02)]"
         :class="isEffectivelyCollapsed ? 'justify-center' : 'justify-between'"

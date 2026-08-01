@@ -241,6 +241,7 @@
     }
   },
   "SIDEBAR_ITEMS": {
+    "WHATSAPP_KURULUM": "WhatsApp numaram",
     "CHANGE_AVAILABILITY_STATUS": "Durumu Değiştir",
     "CHANGE_ACCOUNTS": "Hesap değiştir",
     "SWITCH_ACCOUNT": "Hesap değiştir",
@@ -413,7 +414,9 @@
     "CAPTAIN_AI": "Yapay Zeka",
     "CONVERSATION_WORKFLOW": "Konuşma Akışı",
     "COLLAPSE_MENU": "Menüyü daralt",
-    "EXPAND_MENU": "Menüyü genişlet"
+    "EXPAND_MENU": "Menüyü genişlet",
+    "MENU": "Menü",
+    "PROFILE_SHORT": "Profil"
   },
   "DATA_IMPORTS": {
     "HEADER": "Veri",

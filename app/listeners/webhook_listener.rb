@@ -108,10 +108,13 @@ class WebhookListener < BaseListener
   end
 
   def deliver_account_webhooks(payload, account)
-    return unless account.api_and_webhooks_enabled?
-
     account.webhooks.account_type.each do |webhook|
       next unless webhook.subscriptions.include?(payload[:event])
+      # Chativo: plan kisiti musterinin kendi webhook'larina uygulaniyor.
+      # Bizim kurdugumuz ic webhook'lar (AI koprusu) her planda calisiyor -
+      # aksi halde ucretsiz planlarda asistan hic cevap vermezdi, oysa deneme
+      # surumunun tum degeri o.
+      next unless chativo_webhook_allowed?(account, webhook)
 
       WebhookJob.perform_later(webhook.url, payload, :account_webhook,
                                secret: webhook.secret,
@@ -130,5 +133,20 @@ class WebhookListener < BaseListener
   def deliver_webhook_payloads(payload, inbox)
     deliver_account_webhooks(payload, inbox.account)
     deliver_api_inbox_webhooks(payload, inbox)
+  end
+
+  # Bu webhook gonderilebilir mi.
+  #
+  # Musterinin kendi kurdugu webhook'lar plana bagli (API + webhook yalnizca
+  # Kurumsal'da). Bizim kurdugumuz ic webhook'lar muaf: adresleri
+  # `CHATIVO_INTERNAL_WEBHOOK_URLS` ile taniniyor.
+  def chativo_webhook_allowed?(account, webhook)
+    return true if account.api_and_webhooks_enabled?
+
+    ic_adresler = ENV.fetch('CHATIVO_INTERNAL_WEBHOOK_URLS', '')
+                     .split(',').map { |u| u.strip.downcase }.reject(&:blank?)
+    return false if ic_adresler.blank?
+
+    ic_adresler.include?(webhook.url.to_s.strip.downcase)
   end
 end

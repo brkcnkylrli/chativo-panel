@@ -241,6 +241,7 @@
     }
   },
   "SIDEBAR_ITEMS": {
+    "WHATSAPP_KURULUM": "My WhatsApp number",
     "CHANGE_AVAILABILITY_STATUS": "Change",
     "CHANGE_ACCOUNTS": "Switch account",
     "SWITCH_ACCOUNT": "Switch account",
@@ -414,7 +415,9 @@
     "CAPTAIN_AI": "Captain",
     "CONVERSATION_WORKFLOW": "Conversation Workflow",
     "COLLAPSE_MENU": "Collapse menu",
-    "EXPAND_MENU": "Expand menu"
+    "EXPAND_MENU": "Expand menu",
+    "MENU": "Menu",
+    "PROFILE_SHORT": "Profile"
   },
   "DATA_IMPORTS": {
     "HEADER": "Data",

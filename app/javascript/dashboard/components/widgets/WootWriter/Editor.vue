@@ -409,7 +409,7 @@ function focusEditor(content) {
     // these drafts can also have a signature, so we need to check if the body is empty
     // and handle things accordingly
     handleEmptyBodyWithSignature();
-  } else if (props.focusOnMount) {
+  } else if (props.focusOnMount && !dokunmatikCihaz()) {
     // this is in the else block, handleEmptyBodyWithSignature also has a call to the focus method
     // the position is set to start, because the signature is added at the end of the body
     focusEditorInputField('end');
@@ -843,6 +843,23 @@ watch(sendWithSignature, newValue => {
   }
 });
 
+/**
+ * Dokunmatik cihazda editor kendiliginden odaklanmamali.
+ *
+ * Masaustunde bu davranis dogru: sohbet acilir acilmaz yazmaya baslanabiliyor.
+ * Mobilde ayni davranis her sayfa gecisinde ekran klavyesini aciyor, ekranin
+ * yarisini kapatiyor ve kullanici her seferinde klavyeyi kapatmak zorunda
+ * kaliyor. Kullanici kutuya kendisi dokundugunda klavye yine aciliyor -
+ * engellenen sey yalnizca **otomatik** odaklanma.
+ *
+ * Olcut ekran genisligi degil giris yontemi: `pointer: coarse` parmakla
+ * kullanilan cihazlari (telefon, tablet) isaret ediyor.
+ */
+const dokunmatikCihaz = () =>
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(pointer: coarse)').matches;
+
 onMounted(() => {
   // [VITE] state assignment was done in created before
   state = createState(
@@ -855,7 +872,7 @@ onMounted(() => {
 
   createEditorView();
   editorView.updateState(state);
-  if (props.focusOnMount) {
+  if (props.focusOnMount && !dokunmatikCihaz()) {
     focusEditorInputField();
   }
 });
