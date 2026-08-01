@@ -3,6 +3,39 @@
     "TRY_WOOT": "Hesap oluştur",
     "GET_STARTED": "Chativo'yu kullanmaya başlayın",
     "TITLE": "Kayıt ol",
+    "SUBTITLE": "14 gün ücretsiz. Kredi kartı gerektirmez.",
+    "DIVIDER": "veya e-posta ile",
+    "BRAND": {
+      "HEADLINE": "14 gün boyunca her şey açık.",
+      "BENEFITS": {
+        "NO_CARD": {
+          "TITLE": "Kredi kartı istemiyoruz",
+          "BODY": "Deneme bitince otomatik ücret yok; devam etmek size kalmış."
+        },
+        "SETUP": {
+          "TITLE": "Kurulumu birlikte yapalım",
+          "BODY": "Kanalları bağlama ve yapay zekâ eğitimi için ücretsiz kurulum görüşmesi."
+        },
+        "DATA": {
+          "TITLE": "Verileriniz sizde kalır",
+          "BODY": "Konuşmalarınız model eğitiminde kullanılmaz, dilediğinizde dışa aktarılır."
+        }
+      },
+      "STATS": {
+        "BUSINESSES": {
+          "VALUE": "500+",
+          "LABEL": "işletme"
+        },
+        "CONVERSATIONS": {
+          "VALUE": "50.000+",
+          "LABEL": "AI görüşmesi"
+        },
+        "RATING": {
+          "VALUE": "4,9/5",
+          "LABEL": "memnuniyet"
+        }
+      }
+    },
     "TESTIMONIAL_HEADER": "İlerlemek için tek bir adım atmanız yeterlidir",
     "TESTIMONIAL_CONTENT": "Müşterilerinizle etkileşimde bulunmaktan, onları elde tutmaktan ve yeni müşteriler bulmaktan sadece bir adım uzaktasınız.",
     "TERMS_ACCEPT": "Bir hesap oluşturarak <a href=\"https://chativo.tr/kullanim-sartlari/\">Kullanım Şartlarını</a> ve <a href=\"https://chativo.tr/gizlilik-politikasi/\">Gizlilik Politikamızı</a> kabul etmiş olursunuz",
@@ -52,6 +85,17 @@
       "RESEND": "Doğrulama E-Postasını tekrar gönder",
       "RESEND_SUCCESS": "Verification email sent. Please check your inbox.",
       "RESEND_ERROR": "Could not send verification email. Please try again."
+    },
+    "FIRST_NAME": {
+      "LABEL": "Ad"
+    },
+    "LAST_NAME": {
+      "LABEL": "Soyad"
+    },
+    "STRENGTH": {
+      "WEAK": "Zayıf",
+      "FAIR": "Orta",
+      "STRONG": "Güçlü"
     }
   }
 }

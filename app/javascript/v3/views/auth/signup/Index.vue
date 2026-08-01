@@ -1,86 +1,107 @@
 <script setup>
-import { ref, computed, onBeforeMount } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 import SignupForm from './components/Signup/Form.vue';
-import Testimonials from './components/Testimonials/Index.vue';
-import Spinner from 'shared/components/Spinner.vue';
-import signupBg from 'assets/images/auth/signup-bg.jpg';
+import AuthBrandPanel from '../../../components/Auth/BrandPanel.vue';
+import '../../../assets/nocturne.css';
+import '../../../assets/auth-screens.css';
 
 const store = useStore();
+const { t } = useI18n();
 
-const isLoading = ref(false);
 const globalConfig = computed(() => store.getters['globalConfig/get']);
-const isAChatwootInstance = computed(
-  () => globalConfig.value.installationName === 'Chatwoot'
-);
 
-onBeforeMount(() => {
-  isLoading.value = isAChatwootInstance.value;
-});
+// Fayda kartlari ve rakamlar ceviri dosyasindan geliyor; anahtarlar dongude
+// uretilmiyor - i18n aracligi statik anahtar bekliyor.
+const benefits = computed(() => [
+  {
+    key: 'NO_CARD',
+    title: t('REGISTER.BRAND.BENEFITS.NO_CARD.TITLE'),
+    body: t('REGISTER.BRAND.BENEFITS.NO_CARD.BODY'),
+  },
+  {
+    key: 'SETUP',
+    title: t('REGISTER.BRAND.BENEFITS.SETUP.TITLE'),
+    body: t('REGISTER.BRAND.BENEFITS.SETUP.BODY'),
+  },
+  {
+    key: 'DATA',
+    title: t('REGISTER.BRAND.BENEFITS.DATA.TITLE'),
+    body: t('REGISTER.BRAND.BENEFITS.DATA.BODY'),
+  },
+]);
 
-const resizeContainers = () => {
-  isLoading.value = false;
-};
+const stats = computed(() => [
+  {
+    key: 'BUSINESSES',
+    value: t('REGISTER.BRAND.STATS.BUSINESSES.VALUE'),
+    label: t('REGISTER.BRAND.STATS.BUSINESSES.LABEL'),
+  },
+  {
+    key: 'CONVERSATIONS',
+    value: t('REGISTER.BRAND.STATS.CONVERSATIONS.VALUE'),
+    label: t('REGISTER.BRAND.STATS.CONVERSATIONS.LABEL'),
+  },
+  {
+    key: 'RATING',
+    value: t('REGISTER.BRAND.STATS.RATING.VALUE'),
+    label: t('REGISTER.BRAND.STATS.RATING.LABEL'),
+  },
+]);
 </script>
 
 <template>
-  <div
-    class="relative w-full h-full min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat p-4"
-    :style="{ backgroundImage: `url(${signupBg})` }"
-  >
-    <div
-      class="absolute inset-0 bg-n-gray-12/60 dark:bg-n-gray-1/80 backdrop-blur-sm"
-    />
-    <div
-      v-show="!isLoading"
-      class="relative flex max-w-[960px] bg-white dark:bg-n-solid-2 rounded-lg outline outline-1 outline-n-container shadow-sm"
-      :class="{ 'w-auto xl:w-full': isAChatwootInstance }"
-    >
-      <div class="flex-1 flex items-center justify-center py-10 px-10">
-        <div class="max-w-[420px] w-full">
-          <div class="mb-6">
-            <img
-              :src="globalConfig.logo"
-              :alt="globalConfig.installationName"
-              class="block w-auto h-7 dark:hidden"
-            />
-            <img
-              v-if="globalConfig.logoDark"
-              :src="globalConfig.logoDark"
-              :alt="globalConfig.installationName"
-              class="hidden w-auto h-7 dark:block"
-            />
-            <h2 class="mt-6 text-2xl font-semibold text-n-slate-12">
-              {{
-                isAChatwootInstance
-                  ? $t('REGISTER.GET_STARTED')
-                  : $t('REGISTER.TRY_WOOT')
-              }}
-            </h2>
-            <p class="mt-2 text-sm text-n-slate-11">
-              {{ $t('REGISTER.HAVE_AN_ACCOUNT') }}{{ ' '
-              }}<router-link
-                class="text-n-blue-10 font-medium hover:text-n-blue-11"
-                to="/app/login"
-              >
-                {{ $t('LOGIN.SUBMIT') }}
-              </router-link>
-            </p>
+  <main class="chativo-auth cha-screen">
+    <AuthBrandPanel compact>
+      <div class="cha-brand-foot">
+        <div class="cha-brand-title">{{ $t('REGISTER.BRAND.HEADLINE') }}</div>
+      </div>
+
+      <ul class="cha-benefits">
+        <li v-for="benefit in benefits" :key="benefit.key" class="cha-benefit">
+          <svg
+            width="17"
+            height="17"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M5 12.5l4.5 4.5L19 7.5" />
+          </svg>
+          <div>
+            <div class="cha-benefit-title">{{ benefit.title }}</div>
+            <div class="cha-benefit-text">{{ benefit.body }}</div>
           </div>
-          <SignupForm />
+        </li>
+      </ul>
+
+      <div class="cha-stats">
+        <div v-for="stat in stats" :key="stat.key">
+          <div class="cha-stat-value">{{ stat.value }}</div>
+          <div class="cha-stat-label">{{ stat.label }}</div>
         </div>
       </div>
-      <Testimonials
-        v-if="isAChatwootInstance"
-        class="flex-1 hidden xl:flex"
-        @resize-containers="resizeContainers"
+    </AuthBrandPanel>
+
+    <div class="cha-form-col">
+      <img
+        :src="globalConfig.logo"
+        :alt="globalConfig.installationName"
+        class="cha-mobile-logo"
       />
+
+      <h1 class="cha-title">{{ $t('REGISTER.GET_STARTED') }}</h1>
+      <p class="cha-sub">{{ $t('REGISTER.SUBTITLE') }}</p>
+
+      <SignupForm />
+
+      <div class="cha-meta">
+        {{ $t('REGISTER.HAVE_AN_ACCOUNT') }}
+        <router-link to="/app/login">{{ $t('LOGIN.SUBMIT') }}</router-link>
+      </div>
     </div>
-    <div
-      v-show="isLoading"
-      class="relative flex items-center justify-center w-full h-full"
-    >
-      <Spinner color-scheme="primary" size="" />
-    </div>
-  </div>
+  </main>
 </template>

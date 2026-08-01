@@ -3,6 +3,39 @@
     "TRY_WOOT": "Create an account",
     "GET_STARTED": "Get started with Chatwoot",
     "TITLE": "Register",
+    "SUBTITLE": "14 days free. No credit card required.",
+    "DIVIDER": "or with email",
+    "BRAND": {
+      "HEADLINE": "Everything unlocked for 14 days.",
+      "BENEFITS": {
+        "NO_CARD": {
+          "TITLE": "No credit card needed",
+          "BODY": "Nothing is charged when the trial ends — continuing is up to you."
+        },
+        "SETUP": {
+          "TITLE": "We'll set it up together",
+          "BODY": "A free onboarding call to connect your channels and train the AI."
+        },
+        "DATA": {
+          "TITLE": "Your data stays yours",
+          "BODY": "Conversations are never used for model training, and you can export them anytime."
+        }
+      },
+      "STATS": {
+        "BUSINESSES": {
+          "VALUE": "500+",
+          "LABEL": "businesses"
+        },
+        "CONVERSATIONS": {
+          "VALUE": "50,000+",
+          "LABEL": "AI conversations"
+        },
+        "RATING": {
+          "VALUE": "4.9/5",
+          "LABEL": "satisfaction"
+        }
+      }
+    },
     "TESTIMONIAL_HEADER": "All it takes is one step to move forward",
     "TESTIMONIAL_CONTENT": "You're one step away from engaging your customers, retaining them and finding new ones.",
     "TERMS_ACCEPT": "By creating an account, you agree to our <a href=\"https://www.chatwoot.com/terms\">T & C</a> and <a href=\"https://www.chatwoot.com/privacy-policy\">Privacy policy</a>",
@@ -52,6 +85,17 @@
       "RESEND": "Resend verification email",
       "RESEND_SUCCESS": "Verification email sent. Please check your inbox.",
       "RESEND_ERROR": "Could not send verification email. Please try again."
+    },
+    "FIRST_NAME": {
+      "LABEL": "First name"
+    },
+    "LAST_NAME": {
+      "LABEL": "Last name"
+    },
+    "STRENGTH": {
+      "WEAK": "Weak",
+      "FAIR": "Fair",
+      "STRONG": "Strong"
     }
   }
 }

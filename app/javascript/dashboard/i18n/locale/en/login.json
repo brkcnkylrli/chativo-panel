@@ -21,7 +21,15 @@
       "NO_ACCOUNT_FOUND": "We couldn't find an account for your email address."
     },
     "FORGOT_PASSWORD": "Forgot your password?",
-    "CREATE_NEW_ACCOUNT": "Create a new account",
+    "CREATE_NEW_ACCOUNT": "Create a free account",
+    "NO_ACCOUNT": "Don't have an account?",
+    "SUBTITLE": "Sign in to pick up where you left off.",
+    "DIVIDER": "or with email",
+    "TERMS_NOTE": "By signing in you accept our <a href=\"https://www.chatwoot.com/terms\">Terms of Service</a> and <a href=\"https://www.chatwoot.com/privacy-policy\">Privacy Policy</a>.",
+    "BRAND": {
+      "HEADLINE": "A day where every message got answered.",
+      "SUBLINE": "Sign in to your account — your inbox isn't waiting on you, because it may already be handled."
+    },
     "SUBMIT": "Login",
     "SAML": {
       "LABEL": "Login via SSO",

@@ -1,0 +1,479 @@
+/*
+ * Giris ve kayit ekranlarinin duzeni.
+ *
+ * Olculer verilen tasarim dosyasindan birebir aliniyor (sag sutun 560px, sol
+ * panel dolgu 56px, baslik 34px, yorunge alani 420x420 gibi). Tasarimda bunlar
+ * satir ici stil olarak duruyordu; projede `vue/no-static-inline-styles` acik
+ * oldugu icin sinifa cevrildiler - gorunum ayni, kural ihlali yok.
+ *
+ * Renkler Nocturne token'larindan geliyor; bu dosya hicbir sabit renk
+ * tanimlamiyor. Tema degisirse ekranlar da degisir.
+ */
+
+.chativo-auth.cha-screen {
+  display: grid;
+  grid-template-columns: 1fr 560px;
+  min-height: 100vh;
+  min-height: 100svh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+/* --- sol: marka paneli ------------------------------------------------- */
+
+.chativo-auth .cha-brand {
+  position: relative;
+  overflow: hidden;
+  padding: 56px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chativo-auth .cha-brand-wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 90% at 20% 15%,
+      color-mix(in srgb, var(--color-accent) 20%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      80% 70% at 85% 90%,
+      color-mix(in srgb, var(--ch-live) 12%, transparent),
+      transparent 65%
+    );
+}
+
+.chativo-auth .cha-brand-logo {
+  position: relative;
+  height: 26px;
+  width: auto;
+  /* Panel bir sutun flex kutusu; hizalama varsayilani `stretch` oldugu icin
+     logo `width: auto` olmasina ragmen tum sutunu kapliyor ve en-boy orani
+     bozuluyordu. Kendi genisligiyle kalsin diye basa hizaliyoruz. */
+  align-self: flex-start;
+}
+
+.chativo-auth .cha-stage {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+
+.chativo-auth .cha-orbit {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  display: grid;
+  place-items: center;
+}
+
+.chativo-auth .cha-orbit--compact {
+  width: 300px;
+  height: 300px;
+}
+
+.chativo-auth .cha-orbit svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.chativo-auth .cha-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+
+/*
+ * Kesik cizgiler tasarim dosyasinda `stroke-dashoffset` kaydirilarak
+ * yuruyordu. O ozellik derleyicide hizlandirilamiyor: tarayici her karede
+ * 420px'lik SVG'yi bastan ciziyor ve giris ekrani acikken bunu durmadan
+ * yapiyor. Halkalar tam daire oldugu icin grubu merkez etrafinda dondurmek
+ * gozle ayni etkiyi veriyor, maliyeti ise yalnizca bir transform.
+ */
+.chativo-auth .cha-ring-dashed {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-accent) 50%, transparent);
+  stroke-width: 1.1;
+  stroke-dasharray: 3 8;
+  transform-origin: 210px 210px;
+  animation: cha-dash 34s linear infinite;
+}
+
+.chativo-auth .cha-orbit-track {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: cha-orbit 30s linear infinite;
+}
+
+.chativo-auth .cha-orbit-track--reverse {
+  animation: cha-orbit-reverse 44s linear infinite;
+}
+
+.chativo-auth .cha-dot {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.chativo-auth .cha-dot--live {
+  top: 12px;
+  left: 50%;
+  margin-left: -4.5px;
+  width: 9px;
+  height: 9px;
+  background: var(--ch-live);
+}
+
+.chativo-auth .cha-dot--accent {
+  bottom: 60px;
+  right: 38px;
+  width: 7px;
+  height: 7px;
+  background: var(--color-accent);
+}
+
+.chativo-auth .cha-dot--faint {
+  bottom: 96px;
+  left: 26px;
+  width: 5px;
+  height: 5px;
+  background: var(--color-accent-300);
+}
+
+.chativo-auth .cha-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-accent) 24%, transparent),
+    transparent 70%
+  );
+  animation: cha-glow 6s ease-in-out infinite;
+}
+
+.chativo-auth .cha-mark {
+  position: relative;
+  width: 120px;
+  height: auto;
+}
+
+.chativo-auth .cha-brand-foot {
+  position: relative;
+  max-width: 400px;
+}
+
+.chativo-auth .cha-brand-title {
+  font:
+    500 24px/1.3 var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.chativo-auth .cha-brand-text {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--color-text) 48%, transparent);
+}
+
+/* Kayit ekranindaki fayda kartlari ve rakamlar */
+
+.chativo-auth .cha-benefits {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  max-width: 430px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chativo-auth .cha-benefit {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 16px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  border: 1px solid var(--color-divider);
+}
+
+.chativo-auth .cha-benefit svg {
+  color: var(--ch-live);
+  flex: none;
+  margin-top: 2px;
+}
+
+.chativo-auth .cha-benefit-title {
+  font: 500 14.5px/1.3 var(--font-heading);
+}
+
+.chativo-auth .cha-benefit-text {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-text) 48%, transparent);
+}
+
+.chativo-auth .cha-stats {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding-top: 26px;
+  border-top: 1px solid var(--color-divider);
+}
+
+.chativo-auth .cha-stat-value {
+  font: 500 22px/1 var(--font-heading);
+}
+
+.chativo-auth .cha-stat-label {
+  margin-top: 5px;
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--color-text) 42%, transparent);
+}
+
+/* --- sag: form ---------------------------------------------------------- */
+
+.chativo-auth .cha-form-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 64px;
+  background: color-mix(in srgb, var(--color-surface) 45%, var(--color-bg));
+  border-left: 1px solid var(--color-divider);
+}
+
+.chativo-auth .cha-title {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+
+.chativo-auth .cha-sub {
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  color: color-mix(in srgb, var(--color-text) 52%, transparent);
+}
+
+.chativo-auth .cha-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 26px 0;
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--color-text) 35%, transparent);
+}
+
+.chativo-auth .cha-divider::before, .chativo-auth .cha-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-divider);
+}
+
+.chativo-auth .cha-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.chativo-auth .cha-meta {
+  margin-top: 24px;
+  font-size: 13.5px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+
+.chativo-auth .cha-legal {
+  margin-top: auto;
+  padding-top: 40px;
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--color-text) 32%, transparent);
+}
+
+.chativo-auth .cha-legal a, .chativo-auth .cha-meta a {
+  color: var(--color-accent-300);
+}
+
+/* Tasarimdaki 12/13px dolgular: Nocturne'un varsayilanindan biraz genis */
+.chativo-auth.cha-screen .btn-block {
+  padding: 12px;
+  gap: 10px;
+  font-size: 14.5px;
+}
+
+.chativo-auth.cha-screen .btn-primary.btn-block {
+  padding: 13px;
+  font-size: 15px;
+}
+
+.chativo-auth.cha-screen .input {
+  padding: 11px 13px;
+  font-size: 14px;
+  background: var(--color-bg);
+}
+
+/* --- hareket ------------------------------------------------------------ */
+
+@keyframes cha-dash {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes cha-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes cha-orbit-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes cha-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chativo-auth .cha-ring-dashed, .chativo-auth .cha-orbit-track, .chativo-auth .cha-glow {
+    animation: none;
+  }
+}
+
+/* --- dar ekran ---------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .chativo-auth.cha-screen {
+    grid-template-columns: 1fr;
+  }
+  .chativo-auth .cha-brand {
+    display: none;
+  }
+  .chativo-auth .cha-form-col {
+    padding: 48px 24px;
+    border-left: 0;
+  }
+  .chativo-auth .cha-title {
+    font-size: 27px;
+  }
+}
+
+/* --- form ayrintilari --------------------------------------------------- */
+
+.chativo-auth .cha-label-row {
+  display: flex;
+  align-items: baseline;
+  /* Tasarim sistemindeki `.field > label` kurali dogrudan cocuk istiyor;
+     buradaki etiket bir satir kutusunun icinde oldugu icin o kurala
+     yakalanmiyordu ve digerlerinden buyuk gorunuyordu. Olcu ve alt bosluk
+     burada tekrarlaniyor. */
+  margin-bottom: 5px;
+}
+.chativo-auth .cha-label-row label {
+  flex: 1;
+  font-size: 12px;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+.chativo-auth .cha-label-row a {
+  font-size: 12px;
+  color: var(--color-accent-300);
+}
+
+/* Yalnizca ustten bosluk. `display` verilmiyor: bu sinif Google dugmesinin
+   kok ogesine ekleniyor ve oradaki `.btn` kurali `inline-flex` - blok'a
+   cevrilirse ikon ile yazi alt alta duşuyor. */
+.chativo-auth .cha-oauth {
+  margin-top: 32px;
+}
+
+/* --- form olcegi -------------------------------------------------------
+   Tasarim sistemi `.field`e dis bosluk vermiyor (her yerde ayni olmasi
+   gerekmiyor). Kimlik ekranlarinda tasarimin araligi 16px; dugme ve satir
+   gruplari da ayni olcege oturuyor. */
+/* Yalnizca formun dogrudan cocuklari: `.cha-row` icindeki Ad/Soyad ciftine
+   uygulanirsa ikisi ayni hizada durmuyor, ikincisi asagi kayiyor. */
+.chativo-auth form > .field + .field,
+.chativo-auth form > .cha-row + .field {
+  margin-top: 16px;
+}
+.chativo-auth form .btn-block {
+  margin-top: 26px;
+}
+
+.chativo-auth .cha-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.chativo-auth .cha-error {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #f2778a;
+}
+
+/* Sifre gucu cubugu — tasarimdaki uc bolme */
+.chativo-auth .cha-strength {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.chativo-auth .cha-strength span {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+  transition: background 160ms ease;
+}
+.chativo-auth .cha-strength span.on {
+  background: var(--ch-live);
+}
+.chativo-auth .cha-strength em {
+  font-style: normal;
+  font-size: 11px;
+  color: color-mix(in srgb, var(--color-text) 45%, transparent);
+}
+
+.chativo-auth .cha-terms {
+  margin-top: 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-text) 65%, transparent);
+}
+.chativo-auth .cha-terms a {
+  color: var(--color-accent-300);
+}
+
+/* Dar ekranda logo formun ustune gelir; genis ekranda sol panelde zaten var */
+.chativo-auth .cha-mobile-logo {
+  display: none;
+  height: 24px;
+  width: auto;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 1023px) {
+  .chativo-auth .cha-mobile-logo {
+    display: block;
+  }
+}

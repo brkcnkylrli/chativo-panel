@@ -60,7 +60,13 @@ export const login = async ({
 
 export const register = async creds => {
   try {
-    const { fullName, accountName } = getCredentialsFromEmail(creds.email);
+    // Kayit formu artik ad soyad ve isletme adini soruyor. Gelmedigi durumda
+    // (baska bir cagri noktasi) eski davranis korunuyor: ikisi de e-postadan
+    // turetiliyor.
+    const derived = getCredentialsFromEmail(creds.email);
+    const fullName = creds.fullName || derived.fullName;
+    const accountName = creds.accountName || derived.accountName;
+
     const response = await wootAPI.post('api/v1/accounts.json', {
       account_name: accountName,
       user_full_name: fullName,

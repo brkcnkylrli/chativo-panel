@@ -21,7 +21,15 @@
       "NO_ACCOUNT_FOUND": "E-posta adresinizle ilişkilendirilmiş bir hesap bulunamadı."
     },
     "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
-    "CREATE_NEW_ACCOUNT": "Yeni hesap oluştur",
+    "CREATE_NEW_ACCOUNT": "Ücretsiz hesap oluşturun",
+    "NO_ACCOUNT": "Hesabınız yok mu?",
+    "SUBTITLE": "Hesabınıza giriş yaparak kaldığınız yerden devam edin.",
+    "DIVIDER": "veya e-posta ile",
+    "TERMS_NOTE": "Giriş yaparak <a href=\"https://chativo.tr/kullanim-sartlari/\">Kullanım Şartlarını</a> ve <a href=\"https://chativo.tr/gizlilik-politikasi/\">Gizlilik Politikamızı</a> kabul etmiş olursunuz.",
+    "BRAND": {
+      "HEADLINE": "Her mesajın yanıtlandığı bir gün.",
+      "SUBLINE": "Hesabınıza giriş yapın; gelen kutunuz sizi beklemiyor, çünkü çoktan yanıtlanmış olabilir."
+    },
     "SUBMIT": "Oturum aç",
     "SAML": {
       "LABEL": "SSO ile giriş yapın",
