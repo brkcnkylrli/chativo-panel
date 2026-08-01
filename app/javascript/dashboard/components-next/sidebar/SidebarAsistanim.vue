@@ -14,6 +14,7 @@
  * zorundaydi; panelde hicbir yol yoktu.
  */
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Auth from 'dashboard/api/auth';
 import { useAlert } from 'dashboard/composables';
 import Icon from 'next/icon/Icon.vue';
@@ -22,6 +23,7 @@ defineProps({
   isCollapsed: { type: Boolean, default: false },
 });
 
+const { t } = useI18n();
 const yukleniyor = ref(false);
 
 // Kopru adresi derleme aninda bilinmiyor; panelin acildigi alan adindan
@@ -35,14 +37,20 @@ const ac = async () => {
 
   try {
     const kimlik = Auth.getAuthData() || {};
-    const token = kimlik['access-token'] || kimlik.accessToken;
 
-    if (!token) throw new Error('oturum bulunamadi');
+    if (!kimlik['access-token'] || !kimlik.client || !kimlik.uid) {
+      throw new Error('oturum bulunamadi');
+    }
 
+    // Oturumun tamami gonderiliyor: access-token tek basina bir API anahtari
+    // degil. Onceden yalnizca o gonderiliyordu, kopru de onu API anahtari
+    // sanip Chatwoot'a oyle soruyordu; Chatwoot 401 donuyor ve dugme
+    // "Asistan ayarlari acilamadi" veriyordu. Chatwoot oturumu dogrulamak
+    // icin access-token, client ve uid ucunu birden istiyor.
     const cevap = await fetch(`${kopruAdresi}/musteri/panel-baglantisi`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ chatwootToken: token }),
+      body: JSON.stringify({ oturum: kimlik }),
     });
 
     if (!cevap.ok) throw new Error(`kopru ${cevap.status}`);
@@ -53,7 +61,7 @@ const ac = async () => {
     // Yeni sekme: musteri panelde acik olan konusmayi kaybetmesin.
     window.open(adres, '_blank', 'noopener');
   } catch (err) {
-    useAlert('Asistan ayarları açılamadı, birazdan tekrar deneyin.');
+    useAlert(t('SIDEBAR.ASISTANIM_HATA'));
   } finally {
     yukleniyor.value = false;
   }
@@ -67,10 +75,12 @@ const ac = async () => {
     class="flex items-center w-full gap-2 px-2 py-1.5 rounded-lg text-sm text-n-slate-11 hover:bg-n-alpha-1 hover:text-n-slate-12 disabled:opacity-60"
     :class="isCollapsed ? 'justify-center' : ''"
     :disabled="yukleniyor"
-    :title="isCollapsed ? 'Asistanım' : undefined"
+    :title="isCollapsed ? t('SIDEBAR.ASISTANIM') : undefined"
     @click="ac"
   >
     <Icon icon="i-lucide-bot" class="flex-shrink-0 size-4" />
-    <span v-if="!isCollapsed" class="truncate">Asistanım</span>
+    <span v-if="!isCollapsed" class="truncate">{{
+      t('SIDEBAR.ASISTANIM')
+    }}</span>
   </button>
 </template>

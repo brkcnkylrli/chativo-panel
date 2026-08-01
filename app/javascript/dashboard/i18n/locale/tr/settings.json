@@ -367,6 +367,8 @@
     "CAMPAIGNS": "Kampanyalar",
     "ONGOING": "Devam Eden",
     "ONE_OFF": "Tek Seferlik",
+    "ASISTANIM": "Asistanım",
+    "ASISTANIM_HATA": "Asistan ayarları açılamadı, birazdan tekrar deneyin.",
     "REPORTS_SLA": "SLA",
     "REPORTS_BOT": "Bot",
     "REPORTS_AGENT": "Kullanıcılar",
