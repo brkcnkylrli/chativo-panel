@@ -20,7 +20,10 @@ import {
 import { useDarkMode } from 'widget/composables/useDarkMode';
 import { useRouter } from 'vue-router';
 import { useAvailability } from 'widget/composables/useAvailability';
-import { SDK_SET_BUBBLE_VISIBILITY } from '../shared/constants/sharedFrameEvents';
+import {
+  SDK_SET_BUBBLE_VISIBILITY,
+  SDK_SEND_MESSAGE,
+} from '../shared/constants/sharedFrameEvents';
 import { emitter } from 'shared/helpers/mitt';
 
 export default {
@@ -343,8 +346,29 @@ export default {
           }
         } else if (message.event === SDK_SET_BUBBLE_VISIBILITY) {
           this.setBubbleVisibility(message.hideMessageBubble);
+        } else if (message.event === SDK_SEND_MESSAGE) {
+          this.sendMessageFromHost(message.content);
         }
       });
+    },
+    /**
+     * Barindiran sayfadan gelen metni musteri yazmis gibi konusmaya
+     * dusuruyor ve konusma ekranini aciyor.
+     *
+     * Landing'deki hazir sorular icin: musteri "Fiyatlar" etiketine
+     * basiyor, soru gonderilmis oluyor ve asistan dogrudan cevapliyor.
+     * Konusma yoksa ilk mesajla birlikte aciliyor - Chatwoot'un normal
+     * davranisi bu, ayrica bir sey yapmak gerekmiyor.
+     */
+    sendMessageFromHost(content) {
+      const text = String(content ?? '').trim();
+      if (!text) {
+        return;
+      }
+      this.$store.dispatch('conversation/sendMessage', { content: text });
+      if (this.$route.name !== 'messages') {
+        this.router.replace({ name: 'messages' });
+      }
     },
     sendLoadedEvent() {
       IFrameHelper.sendMessage(loadedEventConfig());

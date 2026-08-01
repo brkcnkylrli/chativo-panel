@@ -16,7 +16,10 @@ import {
   restoreWidgetInDOM,
 } from '../sdk/DOMHelpers';
 import { setCookieWithDomain } from '../sdk/cookieHelpers';
-import { SDK_SET_BUBBLE_VISIBILITY } from 'shared/constants/sharedFrameEvents';
+import {
+  SDK_SET_BUBBLE_VISIBILITY,
+  SDK_SEND_MESSAGE,
+} from 'shared/constants/sharedFrameEvents';
 
 const runSDK = ({ baseUrl, websiteToken }) => {
   if (window.$chatwoot) {
@@ -82,6 +85,24 @@ const runSDK = ({ baseUrl, websiteToken }) => {
 
     toggle(state) {
       IFrameHelper.events.toggleBubble(state);
+    },
+
+    /**
+     * Chativo eki: barindiran sayfanin ziyaretci adina mesaj gondermesi.
+     *
+     * Landing sayfasindaki hazir sorular ("Fiyatlar", "Kurulum nasil?")
+     * icin var. Onceden bunlar yalnizca pencereyi acabiliyordu, soruyu
+     * musterinin elle yazmasi gerekiyordu.
+     *
+     * Pencereyi kendisi acmiyor: acma karari cagiran sayfada kalsin diye.
+     * Genelde `toggle('open')` ile birlikte cagriliyor.
+     */
+    sendMessage(content = '') {
+      const text = String(content).trim();
+      if (!text) {
+        throw new Error('Message content is required');
+      }
+      IFrameHelper.sendMessage(SDK_SEND_MESSAGE, { content: text });
     },
 
     toggleBubbleVisibility(visibility) {
