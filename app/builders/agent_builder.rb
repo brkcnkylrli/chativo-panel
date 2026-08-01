@@ -2,7 +2,9 @@
 # It initializes with necessary attributes and provides a perform method
 # to create a user and account user in a transaction.
 class AgentBuilder
-  LIMIT_EXCEEDED_MESSAGE = 'Account limit exceeded. Please purchase more licenses'.freeze
+  # Musteriye gorunen metin. Chatwoot'un ozgun hali Ingilizce ve "lisans satin
+  # alin" diyordu; bizde lisans degil plan var ve arayuz Turkce.
+  LIMIT_EXCEEDED_MESSAGE = 'Planınızdaki kullanıcı hakkı doldu. Daha fazla kullanıcı eklemek için planınızı yükseltmeniz gerekiyor.'.freeze
 
   class LimitExceededError < StandardError
     def initialize
@@ -35,8 +37,10 @@ class AgentBuilder
 
   private
 
+  # Koprunun servis kullanicisi koltuk saymasina girmiyor; gerekcesi
+  # ChativoServiceAccounts icinde.
   def can_add_agent?
-    account.usage_limits[:agents] > account.account_users.count
+    account.usage_limits[:agents] > ChativoServiceAccounts.billable_user_count(account)
   end
 
   # Finds a user by email or creates a new one with a temporary password.

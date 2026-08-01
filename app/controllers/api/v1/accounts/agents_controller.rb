@@ -100,8 +100,9 @@ class Api::V1::Accounts::AgentsController < Api::V1::Accounts::BaseController
     Current.account.save!
   end
 
+  # Servis kullanicisi haric; gerekcesi ChativoServiceAccounts icinde.
   def available_agent_count
-    Current.account.usage_limits[:agents] - Current.account.account_users.count
+    Current.account.usage_limits[:agents] - ChativoServiceAccounts.billable_user_count(Current.account)
   end
 
   def delete_user_record(agent)
