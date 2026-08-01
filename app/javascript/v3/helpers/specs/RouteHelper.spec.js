@@ -1,4 +1,8 @@
-import { validateRouteAccess, isOnOnboardingView } from '../RouteHelper';
+import {
+  validateRouteAccess,
+  isOnOnboardingView,
+  CHATIVO_SIGNUP_URL,
+} from '../RouteHelper';
 import { clearBrowserSessionCookies } from 'dashboard/store/utils/api';
 import { replaceRouteWithReload } from '../CommonHelper';
 import Cookies from 'js-cookie';
@@ -57,12 +61,23 @@ describe('#validateRouteAccess', () => {
     expect(next).toHaveBeenCalledWith('/app/login');
   });
 
-  it('redirects to login if signup is disabled', () => {
+  // Chativo: panelin kendi kayit ekrani kullanilmiyor, kayit rotasi disaridaki
+  // kayit sayfasina cikiyor. Once bu durum giris ekranina dusuruyordu.
+  it('kayit rotasini disaridaki kayit sayfasina yonlendirir', () => {
+    const replace = vi.fn();
+    const eskiKonum = window.location;
+    delete window.location;
+    window.location = { replace };
+
     validateRouteAccess({ meta: { requireSignupEnabled: true } }, next, {
       signupEnabled: 'true',
     });
+
+    expect(replace).toHaveBeenCalledWith(CHATIVO_SIGNUP_URL);
+    expect(next).not.toHaveBeenCalled();
     expect(clearBrowserSessionCookies).not.toHaveBeenCalled();
-    expect(next).toHaveBeenCalledWith('/app/login');
+
+    window.location = eskiKonum;
   });
 
   it('continues to the route in every other case', () => {

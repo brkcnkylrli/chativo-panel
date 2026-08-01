@@ -10,6 +10,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { SESSION_STORAGE_KEYS } from 'dashboard/constants/sessionStorage';
 import SessionStorage from 'shared/helpers/sessionStorage';
 import { useBranding } from 'shared/composables/useBranding';
+import { CHATIVO_SIGNUP_URL } from '../../helpers/RouteHelper';
 import AnalyticsHelper from 'dashboard/helper/AnalyticsHelper';
 import { SESSION_EVENTS } from 'dashboard/helper/AnalyticsHelper/events';
 
@@ -98,8 +99,12 @@ export default {
         Boolean(window.chatwootConfig.googleOAuthClientId)
       );
     },
-    showSignupLink() {
-      return window.chatwootConfig.signupEnabled === 'true';
+    // Kayit baglantisi her zaman gorunuyor. Panelde kayit kapali
+    // (ENABLE_ACCOUNT_SIGNUP=false) ama musteri chativo.tr/kayit uzerinden
+    // kaydolabiliyor; eski kosul bu yuzden yanlisti - giris ekraninda
+    // kaydolacak hicbir yol gorunmuyordu.
+    signupUrl() {
+      return CHATIVO_SIGNUP_URL;
     },
     showSamlLogin() {
       return this.allowedLoginMethods.includes('saml');
@@ -409,11 +414,9 @@ export default {
             </button>
           </form>
 
-          <div v-if="showSignupLink" class="cha-meta">
+          <div class="cha-meta">
             {{ $t('LOGIN.NO_ACCOUNT') }}
-            <router-link to="auth/signup">
-              {{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}
-            </router-link>
+            <a :href="signupUrl">{{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}</a>
           </div>
 
           <!-- eslint-disable-next-line vue/no-v-html -->

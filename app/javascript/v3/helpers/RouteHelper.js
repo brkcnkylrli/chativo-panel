@@ -4,6 +4,20 @@ import { hasAuthCookie } from './AuthHelper';
 import { DEFAULT_REDIRECT_URL } from 'dashboard/constants/globals';
 import { replaceRouteWithReload } from './CommonHelper';
 
+/**
+ * Chativo eki: panelin kendi kayit ekrani kullanilmiyor.
+ *
+ * Musteriler chativo.tr/kayit uzerinden kaydoluyor; orada plan secimi,
+ * deneme suresi ve WhatsApp baglama akisi birlikte kuruluyor. Chatwoot'un
+ * ham kayit formu bunlarin hicbirini yapmadigi icin iki ayri kayit yolu
+ * olusuyordu. Adres dogrudan yazilsa bile disariya cikiyoruz.
+ *
+ * Adres burada sabit: kurulum tek bir markaya ait ve fork'ta ayni desen
+ * zaten kullaniliyor. Ortam degiskenine tasimak, degiskeni on yuze de
+ * tasimak demek olurdu.
+ */
+export const CHATIVO_SIGNUP_URL = 'https://chativo.tr/kayit';
+
 const validateSSOLoginParams = to => {
   const isLoginRoute = to.name === 'login';
   const { email, sso_auth_token: ssoAuthToken } = to.query || {};
@@ -30,6 +44,14 @@ export const validateRouteAccess = (to, next, chatwootConfig = {}) => {
   // cleanup and token validation happens in the application pack.
   if (hasAuthCookie()) {
     replaceRouteWithReload(DEFAULT_REDIRECT_URL);
+    return;
+  }
+
+  // Chativo: kayit ekranina her gidis disaridaki kayit sayfasina cikiyor.
+  // Panelde kayit kapali oldugu icin burasi eskiden giris ekranina
+  // dusuruyordu; musterinin kaydolacak bir yeri kalmiyordu.
+  if (to.meta && to.meta.requireSignupEnabled) {
+    window.location.replace(CHATIVO_SIGNUP_URL);
     return;
   }
 
