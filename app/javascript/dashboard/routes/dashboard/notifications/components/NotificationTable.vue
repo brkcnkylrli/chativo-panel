@@ -53,7 +53,13 @@ export default {
   <section
     class="flex-grow flex-shrink h-full px-4 py-8 overflow-hidden bg-n-background"
   >
-    <div class="flex w-full items-center justify-between gap-2 mb-4">
+    <!--
+      Telefonda baslik ve dugme alt alta: yan yanayken "Hepsini Tamamlandi
+      Isaretle" basligi ezip kart sinirini asiyordu.
+    -->
+    <div
+      class="flex w-full flex-col items-start gap-3 mb-4 sm:flex-row sm:items-center sm:justify-between sm:gap-2"
+    >
       <h6 class="text-xl font-medium text-n-slate-12">
         {{ $t('NOTIFICATIONS_PAGE.HEADER') }}
       </h6>
@@ -66,7 +72,12 @@ export default {
         @click="onMarkAllDoneClick"
       />
     </div>
-    <table class="notifications-table overflow-auto">
+    <!--
+      `w-full table-fixed`: onceden tablo icerigine gore genisliyordu ve
+      bildirim metni telefonda ekranin disina tasip kesiliyordu - kirpma
+      calismiyordu cunku kirpilacak bir sinir yoktu.
+    -->
+    <table class="notifications-table w-full table-fixed">
       <tbody v-show="!isLoading">
         <tr
           v-for="notificationItem in notifications"
@@ -97,7 +108,9 @@ export default {
               </span>
             </div>
           </td>
-          <td class="text-right">
+          <!-- Tur etiketi telefonda gizli: dar ekranda mesaji sikistiriyor
+               ve zaten metnin kendisi ayni bilgiyi tasiyor. -->
+          <td class="hidden text-right sm:table-cell">
             <span class="notification--type">
               {{
                 $t(

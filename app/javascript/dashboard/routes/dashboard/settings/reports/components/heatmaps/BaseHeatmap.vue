@@ -2,7 +2,9 @@
 import { computed } from 'vue';
 import { useMemoize } from '@vueuse/core';
 
-import format from 'date-fns/format';
+// Turkce bicimleme: dogrudan `date-fns/format` cagrilirsa gun ve ay adlari
+// Ingilizce yaziyor ("Jul 27, 2026") ve panelin geri kalaniyla catisiyor.
+import { tarihBicimle as format } from 'shared/helpers/timeHelper';
 import getDay from 'date-fns/getDay';
 
 import { getQuantileIntervals } from '@chatwoot/utils';
@@ -118,8 +120,13 @@ const tooltip = useHeatmapTooltip();
 
 <!-- eslint-disable vue/no-static-inline-styles -->
 <template>
+  <!--
+    `overflow-x-auto` sart: izgara icinde 24 saatlik seride `min-w-[700px]`
+    var ve telefonda kart sinirini asiyordu - saatlerin sagi ekranin disinda
+    kaliyor, kaydirilamiyordu.
+  -->
   <div
-    class="grid relative w-full gap-x-4 gap-y-2.5 overflow-y-scroll md:overflow-visible grid-cols-[80px_1fr]"
+    class="grid relative w-full gap-x-4 gap-y-2.5 overflow-x-auto overflow-y-scroll md:overflow-visible grid-cols-[80px_1fr]"
   >
     <template v-if="isLoading">
       <div class="grid gap-[5px] flex-shrink-0">

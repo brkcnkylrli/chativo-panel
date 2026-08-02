@@ -46,6 +46,8 @@ vi.mock('shared/helpers/timeHelper', () => ({
     return timestamps[time] || 'now';
   },
   dateFormat: timestamp => `date-${timestamp}`,
+  // Bilesen `date-fns/format` yerine bunu kullaniyor (Turkce ve 24 saatlik).
+  tarihBicimle: (tarih, bicim) => `bicim-${bicim}`,
 }));
 
 describe('ReportDrilldownCard.vue', () => {

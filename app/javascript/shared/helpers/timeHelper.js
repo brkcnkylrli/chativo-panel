@@ -42,6 +42,16 @@ function saatiYirmiDorde(bicim) {
 const format = (tarih, bicim) =>
   dfFormat(tarih, saatiYirmiDorde(bicim), { locale: tr });
 
+/**
+ * `date-fns/format`'in Turkce yerine gececek hali.
+ *
+ * Bu dosyadaki yardimcilar unix damgasi aliyor; bazi ekranlar (rapor isi
+ * haritasi, detay kartlari) elinde `Date` nesnesiyle dogrudan date-fns
+ * cagiriyordu ve o cagrilar Ingilizce yaziyordu. Ayni locale ve ayni saat
+ * donusumu oralarda da gecerli olsun diye disari aciliyor.
+ */
+export const tarihBicimle = (tarih, bicim) => format(tarih, bicim);
+
 const formatDistanceToNow = (tarih, secenekler) =>
   dfFormatDistanceToNow(tarih, { ...secenekler, locale: tr });
 

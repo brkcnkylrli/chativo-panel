@@ -45,9 +45,16 @@ defineProps({
         </div>
       </slot>
     </div>
+    <!--
+      Telefonda ikili izgara, genis ekranda eski satir duzeni.
+      Onceden her zaman `flex justify-between` idi: dort metrik dar ekranda
+      yan yana sikisiyor ve **etiketler ust uste biniyordu** -
+      "Ilgilenilmemis", "Atanmamis" ve "Bekliyor" ic ice gecmis, hicbiri
+      okunmuyordu.
+    -->
     <div
       v-if="!isLoading"
-      class="card-body max-w-full w-full ml-auto mr-auto justify-between flex"
+      class="card-body max-w-full w-full ml-auto mr-auto grid grid-cols-2 gap-y-5 gap-x-4 sm:flex sm:justify-between"
     >
       <slot />
     </div>

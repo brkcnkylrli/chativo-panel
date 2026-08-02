@@ -184,6 +184,11 @@ const etkinMi = bolum => {
  *
  * Cam hissini veren uc sey birlikte calisiyor: yuksek bulaniklik, doygunluk
  * artisi (arkadaki renkler solmasin) ve ust kenardaki ince isik.
+ *
+ * **Renkler iki tema icin ayri.** Ilk surumde yalnizca koyu tema
+ * dusunulmustu: cubuk sabit koyu zeminli ve gri ikonluydu, acik temada
+ * gri uzerine gri kaliyor ve **ikonlar hic okunmuyordu**. Panelin temasi
+ * `html.dark` sinifiyla belirleniyor, varsayilan acik.
  */
 .chativo-alt-cubuk {
   position: fixed;
@@ -195,14 +200,22 @@ const etkinMi = bolum => {
   gap: 2px;
   align-items: stretch;
   padding: 10px 6px 9px;
-  background: rgb(22 24 29 / 62%);
-  border: 1px solid rgb(255 255 255 / 9%);
+  background: rgb(255 255 255 / 82%);
+  border: 1px solid rgb(0 0 0 / 8%);
   border-radius: 26px;
+  box-shadow:
+    0 8px 24px rgb(0 0 0 / 12%),
+    inset 0 1px 0 rgb(255 255 255 / 60%);
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+}
+
+:global(html.dark) .chativo-alt-cubuk {
+  background: rgb(22 24 29 / 62%);
+  border-color: rgb(255 255 255 / 9%);
   box-shadow:
     0 10px 30px rgb(0 0 0 / 45%),
     inset 0 1px 0 rgb(255 255 255 / 6%);
-  backdrop-filter: blur(24px) saturate(170%);
-  -webkit-backdrop-filter: blur(24px) saturate(170%);
 }
 
 /* Masaustunde sol menu zaten var. */
@@ -222,13 +235,17 @@ const etkinMi = bolum => {
   justify-content: flex-start;
   min-width: 0;
   padding: 0;
-  color: rgb(107 114 128);
+  color: rgb(113 118 128);
   text-decoration: none;
   background: none;
   border: 0;
   cursor: pointer;
   font-family: inherit;
   transition: color 160ms ease-out;
+}
+
+:global(html.dark) .chativo-alt-oge {
+  color: rgb(107 114 128);
 }
 
 /*
@@ -243,6 +260,10 @@ const etkinMi = bolum => {
 }
 
 .chativo-alt-etkin {
+  color: rgb(24 26 31);
+}
+
+:global(html.dark) .chativo-alt-etkin {
   color: rgb(231 233 238);
 }
 
@@ -305,8 +326,13 @@ const etkinMi = bolum => {
   color: rgb(255 255 255);
   text-align: center;
   background: rgb(229 72 77);
-  border: 2px solid rgb(20 22 27);
+  /* Kenarlik cubugun zeminiyle ayni: rozet ikondan ayrilsin diye var. */
+  border: 2px solid rgb(247 248 250);
   border-radius: 999px;
+}
+
+:global(html.dark) .chativo-alt-sayac {
+  border-color: rgb(20 22 27);
 }
 
 /* Sayisiz uyari: "bakilacak bir sey var" demek yetiyor. */
@@ -316,9 +342,14 @@ const etkinMi = bolum => {
   inset-inline-start: 17px;
   width: 8px;
   height: 8px;
-  background: rgb(45 212 191);
-  border: 2px solid rgb(20 22 27);
+  background: rgb(13 148 136);
+  border: 2px solid rgb(247 248 250);
   border-radius: 999px;
+}
+
+:global(html.dark) .chativo-alt-nokta {
+  background: rgb(45 212 191);
+  border-color: rgb(20 22 27);
 }
 
 /*
