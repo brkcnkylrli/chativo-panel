@@ -152,6 +152,7 @@
     "LIST": {
       "LOADING_MESSAGE": "Loading notifications...",
       "404": "No Notifications",
+      "EMPTY_HINT": "New activity on conversations assigned to you, or where you are mentioned, will show up here.",
       "TABLE_HEADER": [
         "Name",
         "Phone Number",

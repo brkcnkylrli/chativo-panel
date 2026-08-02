@@ -152,6 +152,7 @@
     "LIST": {
       "LOADING_MESSAGE": "Bildirimler yükleniyor...",
       "404": "Bildirim yok",
+      "EMPTY_HINT": "Size atanan konuşmalarda ve bahsedildiğiniz yerlerde yeni bir hareket olduğunda burada görünecek.",
       "TABLE_HEADER": [
         "İsim",
         "Telefon Numarası",

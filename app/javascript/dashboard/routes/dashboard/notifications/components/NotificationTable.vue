@@ -1,7 +1,8 @@
 <script>
 import Avatar from 'next/avatar/Avatar.vue';
 import Spinner from 'shared/components/Spinner.vue';
-import EmptyState from 'dashboard/components/widgets/EmptyState.vue';
+// EmptyState burada kullanilmiyor: bos durum ikon ve aciklama tasiyor,
+// paylasilan bilesen yalnizca baslik + metin gosterebiliyor.
 import { dynamicTime } from 'shared/helpers/timeHelper';
 import { mapGetters } from 'vuex';
 import NextButton from 'dashboard/components-next/button/Button.vue';
@@ -10,7 +11,6 @@ export default {
   components: {
     Avatar,
     Spinner,
-    EmptyState,
     NextButton,
   },
   props: {
@@ -50,8 +50,13 @@ export default {
 </script>
 
 <template>
+  <!--
+    `min-w-0`: esnek bir cocuk varsayilan olarak icerigi kadar genisleyebilir,
+    yani tablo genisse bolum de tasar. Telefonda gri alanin sag kenari ekran
+    disinda kaliyordu.
+  -->
   <section
-    class="flex-grow flex-shrink h-full px-4 py-8 overflow-hidden bg-n-background"
+    class="flex-grow flex-shrink min-w-0 h-full px-4 py-8 overflow-hidden bg-n-background"
   >
     <!--
       Telefonda baslik ve dugme alt alta: yan yanayken "Hepsini Tamamlandi
@@ -144,10 +149,29 @@ export default {
         </tr>
       </tbody>
     </table>
-    <EmptyState
+    <!--
+      Bos durum.
+      Onceden yalnizca ortada tek bir "Bildirim yok" satiri vardi ve altinda
+      ekran boyu bos gri bir alan kaliyordu - sayfa yuklenmemis gibi
+      gorunuyordu. Bos liste bir hata degil, iyi haber: bunu soylemek
+      sessizce bos durmaktan iyi.
+    -->
+    <div
       v-if="showEmptyResult"
-      :title="$t('NOTIFICATIONS_PAGE.LIST.404')"
-    />
+      class="flex flex-col items-center justify-center gap-3 px-6 py-20 text-center"
+    >
+      <span
+        class="grid rounded-full size-12 place-content-center bg-n-slate-3 text-n-slate-10"
+      >
+        <span class="i-lucide-bell size-5" />
+      </span>
+      <h3 class="mb-0 text-base font-medium text-n-slate-12">
+        {{ $t('NOTIFICATIONS_PAGE.LIST.404') }}
+      </h3>
+      <p class="max-w-xs text-sm text-n-slate-11">
+        {{ $t('NOTIFICATIONS_PAGE.LIST.EMPTY_HINT') }}
+      </p>
+    </div>
     <div v-if="isLoading" class="notifications--loader">
       <Spinner />
       <span>{{ $t('NOTIFICATIONS_PAGE.LIST.LOADING_MESSAGE') }}</span>
