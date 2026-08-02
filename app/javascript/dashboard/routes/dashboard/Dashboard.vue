@@ -23,7 +23,10 @@ const FloatingCallWidget = defineAsyncComponent(
 import CopilotLauncher from 'dashboard/components-next/copilot/CopilotLauncher.vue';
 import CopilotContainer from 'dashboard/components/copilot/CopilotContainer.vue';
 
-import MobileSidebarLauncher from 'dashboard/components-next/sidebar/MobileSidebarLauncher.vue';
+// Yuzen menu dugmesi (MobileSidebarLauncher) kaldirildi: alt cubukta zaten
+// "Menu" var ve ikisi ayni isi yapiyordu. Yuzen olan ayrica icerigin ustunu
+// kapatiyordu - iki giris noktasi, kullanicinin denemeden ogrenemedigi bir
+// fark demek.
 import MobileBottomNav from 'dashboard/components-next/sidebar/MobileBottomNav.vue';
 import { useCallsStore } from 'dashboard/stores/calls';
 
@@ -37,7 +40,6 @@ export default {
     CopilotLauncher,
     CopilotContainer,
     FloatingCallWidget,
-    MobileSidebarLauncher,
     MobileBottomNav,
   },
   setup() {
@@ -149,14 +151,36 @@ export default {
         v-show="showUpgradePage"
         ref="upgradePageRef"
         :bypass-upgrade-page="bypassUpgradePage"
-      >
-        <MobileSidebarLauncher
-          :is-mobile-sidebar-open="isMobileSidebarOpen"
-          @toggle="toggleMobileSidebar"
+      />
+
+      <!--
+        Menu acikken arkasi karariyor.
+        Onceden ortu katmani hic yoktu: menu icerigin ustune biniyor ama
+        arkadaki liste tam parlaklikta duruyordu, yani menu gecici bir katman
+        gibi degil yapismis bir panel gibi gorunuyordu. Karartmaya dokunmak da
+        menuyu kapatiyor - telefonda beklenen davranis bu.
+      -->
+      <Transition name="chativo-ortu">
+        <div
+          v-if="isMobileSidebarOpen"
+          class="chativo-menu-ortu md:hidden"
+          @click="closeMobileSidebar"
         />
-      </UpgradePage>
+      </Transition>
       <template v-if="!showUpgradePage">
-        <router-view />
+        <!--
+          Bolumler arasi gecis.
+          Alt cubuk sekmeleri yan yana ve esit; aralarinda bir yon yok, o
+          yuzden kayma degil kisa bir belirme. `out-in`: eskisi tamamen
+          cikmadan yenisi girmiyor - ikisi ayni anda DOM'da olsaydi konusma
+          gorunumunun mutlak konumlandirilmis panelleri ust uste binerdi.
+          Sure yalnizca telefonda tanimli; masaustunde gecis aninda bitiyor.
+        -->
+        <router-view v-slot="{ Component }">
+          <Transition name="chativo-sayfa" mode="out-in">
+            <component :is="Component" />
+          </Transition>
+        </router-view>
         <CommandBar />
         <CopilotLauncher />
         <CopilotContainer />
@@ -179,3 +203,77 @@ export default {
     </main>
   </div>
 </template>
+
+<style scoped>
+/*
+ * Menunun arkasindaki karartma.
+ *
+ * `backdrop-filter` bilincli olarak yok: menu ekranin yarisindan fazlasini
+ * kapliyor ve arkasini ayrica bulaniklastirmak orta seviye telefonlarda
+ * acilis animasyonunu kekeletiyor. Duz bir karartma hem ucuz hem yeterli.
+ */
+.chativo-menu-ortu {
+  position: fixed;
+  inset: 0;
+  z-index: 39; /* menu 40; karartma tam altinda kalmali */
+  background: rgb(0 0 0 / 55%);
+}
+
+.chativo-ortu-enter-active,
+.chativo-ortu-leave-active {
+  transition: opacity 200ms ease-out;
+}
+
+.chativo-ortu-enter-from,
+.chativo-ortu-leave-to {
+  opacity: 0;
+}
+
+/*
+ * Bolum gecisi - yalnizca telefonda.
+ *
+ * Masaustunde sol menu her zaman gorunuyor ve nereye gidildigi zaten belli;
+ * orada gecis animasyonu yalnizca beklemek demek. Medya sorgusunun disinda
+ * hicbir sure tanimli olmadigi icin gecis aninda bitiyor.
+ *
+ * Sureler kisa tutuldu: uzun animasyon ilk seferde hos, onuncu seferde yavas.
+ */
+@media (width < 768px) {
+  .chativo-sayfa-enter-active {
+    transition:
+      opacity 140ms ease-out,
+      transform 140ms ease-out;
+  }
+
+  .chativo-sayfa-leave-active {
+    transition:
+      opacity 100ms ease-in,
+      transform 100ms ease-in;
+  }
+
+  .chativo-sayfa-enter-from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  .chativo-sayfa-leave-to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Hareket duyarliligi olan kullanici icin bu bir tercih degil, erisilebilirlik. */
+@media (prefers-reduced-motion: reduce) {
+  .chativo-ortu-enter-active,
+  .chativo-ortu-leave-active,
+  .chativo-sayfa-enter-active,
+  .chativo-sayfa-leave-active {
+    transition: none;
+  }
+
+  .chativo-sayfa-enter-from,
+  .chativo-sayfa-leave-to {
+    transform: none;
+  }
+}
+</style>

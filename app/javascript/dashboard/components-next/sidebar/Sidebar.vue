@@ -277,6 +277,67 @@ const closeMobileSidebar = () => {
   emit('closeMobileSidebar');
 };
 
+/*
+ * Parmakla sola surukleyerek kapatma.
+ *
+ * Telefonda acilan her yan menunun beklenen davranisi bu; onceden yalnizca
+ * dokunarak kapaniyordu. Parmak takip ediyor, yarisindan fazlasi cekilirse
+ * menu kapaniyor, azsa geri yapisiyor.
+ *
+ * Yalnizca yatay hareket sayiliyor: dikey kaydirma menunun kendi listesini
+ * gezmek icin ve o hareket menuyu kaydirmaya baslarsa liste kullanilamaz
+ * hale gelir. Yon ilk 10 pikselde bir kez secilip kilitleniyor.
+ */
+const kenarCubuguRef = ref(null);
+const surukleme = ref(0);
+const surukleniyor = ref(false);
+const baslangic = { x: 0, y: 0, yon: null };
+
+const dokunusBasladi = olay => {
+  if (!isMobile.value || !props.isMobileSidebarOpen) return;
+  const nokta = olay.touches[0];
+  baslangic.x = nokta.clientX;
+  baslangic.y = nokta.clientY;
+  baslangic.yon = null;
+  surukleniyor.value = true;
+};
+
+const dokunusIlerledi = olay => {
+  if (!surukleniyor.value) return;
+  const nokta = olay.touches[0];
+  const dx = nokta.clientX - baslangic.x;
+  const dy = nokta.clientY - baslangic.y;
+
+  if (baslangic.yon === null) {
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+    baslangic.yon = Math.abs(dx) > Math.abs(dy) ? 'yatay' : 'dikey';
+  }
+
+  if (baslangic.yon !== 'yatay') return;
+  // Yalnizca sola: saga cekmek menuyu ekrandan tasirirdi.
+  surukleme.value = Math.min(0, dx);
+};
+
+const dokunusBitti = () => {
+  if (!surukleniyor.value) return;
+  const genislik = kenarCubuguRef.value?.offsetWidth || 280;
+  if (Math.abs(surukleme.value) > genislik / 2) closeMobileSidebar();
+  surukleme.value = 0;
+  surukleniyor.value = false;
+  baslangic.yon = null;
+};
+
+// Surukleme sirasinda animasyon kapali: parmagin altindaki panel gecikmeli
+// hareket ederse baglanti kopuyor.
+const mobilStil = computed(() => {
+  if (!isMobile.value) return { width: `${sidebarWidth.value}px` };
+  if (!surukleme.value) return undefined;
+  return {
+    transform: `translateX(${surukleme.value}px)`,
+    transition: 'none',
+  };
+});
+
 // Yapraklar (gercek sayfa baglantilari) dokunuldugunda menuyu kapatiyor.
 // Grup basliklari kapatmiyor: onlar bir bolume gitmekle kalmiyor, alt
 // menuyu de aciyorlar ve menu kapanirsa acilan sey gorunmuyor.
@@ -887,6 +948,7 @@ const menuItems = computed(() => {
 
 <template>
   <aside
+    ref="kenarCubuguRef"
     v-on-click-outside="[
       closeMobileSidebar,
       {
@@ -897,14 +959,18 @@ const menuItems = computed(() => {
         ],
       },
     ]"
-    class="bg-n-sidebar flex flex-col text-sm pb-[76px] md:pb-px fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak transition-transform duration-200 ease-out md:transition-[width]"
+    class="chativo-kenar-cubugu bg-n-sidebar flex flex-col text-sm md:pb-px fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak transition-transform duration-200 ease-out md:transition-[width]"
     :class="[
       {
-        'shadow-lg md:shadow-none': isMobileSidebarOpen,
+        'shadow-2xl md:shadow-none': isMobileSidebarOpen,
         'ltr:-translate-x-full rtl:translate-x-full': !isMobileSidebarOpen,
       },
     ]"
-    :style="isMobile ? undefined : { width: `${sidebarWidth}px` }"
+    :style="mobilStil"
+    @touchstart.passive="dokunusBasladi"
+    @touchmove.passive="dokunusIlerledi"
+    @touchend="dokunusBitti"
+    @touchcancel="dokunusBitti"
   >
     <section
       class="grid"
@@ -1050,3 +1116,30 @@ const menuItems = computed(() => {
     </section>
   </aside>
 </template>
+
+<style scoped>
+/*
+ * Mobil menu genisligi.
+ *
+ * Onceden sabit 200 pikseldi: telefonda ekranin yarisindan az ve "Konusma
+ * Akisi", "Hazir Yanitlar" gibi basliklar sigmiyordu, alt menuler iyice
+ * sikisiyordu. 84vw okunur bir genislik veriyor, 320 piksel tavani ise
+ * tablette menunun ekrani yutmasini engelliyor.
+ *
+ * Alt bosluk alt cubugun yuksekligi (76px) arti telefonun kendi gezinme
+ * cubugu icin guvenli alan payi - iPhone'da menunun son satiri o cubugun
+ * altinda kaliyordu.
+ */
+@media (width < 768px) {
+  .chativo-kenar-cubugu {
+    width: min(84vw, 320px);
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chativo-kenar-cubugu {
+    transition: none;
+  }
+}
+</style>

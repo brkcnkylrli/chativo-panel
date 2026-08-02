@@ -47,12 +47,12 @@ const mobilMenuyuKapat = inject('mobilMenuyuKapat', null);
     <component
       :is="to ? 'router-link' : 'div'"
       :to="to"
-      @click="mobilMenuyuKapat && mobilMenuyuKapat()"
       :title="label"
-      class="flex h-8 items-center gap-2 px-2 py-1 rounded-lg ltr:hover:bg-gradient-to-r rtl:hover:bg-gradient-to-l from-transparent via-n-slate-3/70 to-n-slate-3/70 group min-w-0"
+      class="chativo-menu-satiri flex h-8 items-center gap-2 px-2 py-1 rounded-lg ltr:hover:bg-gradient-to-r rtl:hover:bg-gradient-to-l from-transparent via-n-slate-3/70 to-n-slate-3/70 group min-w-0"
       :class="{
         'text-n-slate-12 bg-n-alpha-2 active': active,
       }"
+      @click="mobilMenuyuKapat && mobilMenuyuKapat()"
     >
       <component
         :is="component"
@@ -69,3 +69,26 @@ const mobilMenuyuKapat = inject('mobilMenuyuKapat', null);
     </component>
   </Policy>
 </template>
+
+<style scoped>
+/*
+ * Telefonda dokunma hedefi.
+ *
+ * Satirlar masaustu icin 32 piksel yuksekliginde; parmak icin kabul edilen
+ * alt sinir 44. Yuksekligi dogrudan buyutmek menuyu seyreltip daha az satir
+ * gosterirdi, o yuzden **gorsel yukseklik ayni kaliyor**: satirin kendisi
+ * 32'de duruyor, dokunma alani ustune ve altina tasan gorunmez bir alanla
+ * 44'e tamamlaniyor.
+ */
+@media (width < 768px) {
+  .chativo-menu-satiri {
+    position: relative;
+  }
+
+  .chativo-menu-satiri::after {
+    position: absolute;
+    inset: -6px 0;
+    content: '';
+  }
+}
+</style>
