@@ -897,12 +897,11 @@ const menuItems = computed(() => {
         ],
       },
     ]"
-    class="bg-n-sidebar flex flex-col text-sm pb-[76px] md:pb-px fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak"
+    class="bg-n-sidebar flex flex-col text-sm pb-[76px] md:pb-px fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak transition-transform duration-200 ease-out md:transition-[width]"
     :class="[
       {
         'shadow-lg md:shadow-none': isMobileSidebarOpen,
         'ltr:-translate-x-full rtl:translate-x-full': !isMobileSidebarOpen,
-        'transition-transform duration-200 ease-out md:transition-[width]': true,
       },
     ]"
     :style="isMobile ? undefined : { width: `${sidebarWidth}px` }"
@@ -1007,7 +1006,11 @@ const menuItems = computed(() => {
         "
         type="button"
         class="flex gap-2 items-center px-2 py-1.5 mx-1.5 mb-1 rounded-lg transition-colors text-n-slate-11 hover:bg-n-alpha-2"
-        :class="isEffectivelyCollapsed ? 'justify-center w-auto' : 'w-[calc(100%-0.75rem)]'"
+        :class="
+          isEffectivelyCollapsed
+            ? 'justify-center w-auto'
+            : 'w-[calc(100%-0.75rem)]'
+        "
         @click="toggleSidebar"
       >
         <span
@@ -1022,7 +1025,17 @@ const menuItems = computed(() => {
           {{ t('SIDEBAR.COLLAPSE_MENU') }}
         </span>
       </button>
-      <div class="px-1 flex-shrink-0">
+      <!--
+        w-full sart: sarmalayan section `items-center` tasiyor, yani
+        genisligi belirtilmemis cocugu icerigine gore daraltip ortaliyor.
+        Asistanim dugmesi bu yuzden ustundeki ve altindaki satirlarla ayni
+        hizada durmuyordu - tek basina ortalanmis gorunuyordu.
+        Yatay bosluk da ustteki dugmeyle ayni: mx-1.5 + kendi px-2'si.
+      -->
+      <div
+        class="mx-1.5 flex-shrink-0"
+        :class="isEffectivelyCollapsed ? 'w-auto' : 'w-[calc(100%-0.75rem)]'"
+      >
         <SidebarAsistanim :is-collapsed="isEffectivelyCollapsed" />
       </div>
       <div
