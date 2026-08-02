@@ -197,7 +197,7 @@ export default {
 </script>
 
 <template>
-  <section class="flex w-full h-full min-w-0">
+  <section class="relative flex w-full h-full min-w-0">
     <ChatList
       :show-conversation-list="showConversationList"
       :conversation-inbox="inboxId"
@@ -208,14 +208,67 @@ export default {
       :is-on-expanded-layout="isOnExpandedLayout"
       @conversation-load="onConversationLoad"
     />
-    <ConversationBox
-      v-if="showMessageView"
-      :inbox-id="inboxId"
-      :is-on-expanded-layout="isOnExpandedLayout"
-    >
-      <SidepanelSwitch v-if="currentChat.id" />
-    </ConversationBox>
+    <!--
+      Konusmaya girerken sagdan geliyor, cikarken sağa donuyor.
+      Telefonda listeyle konusma ayni yeri paylasiyor ve gecis animasyonsuz
+      bir sicramaydi: nereye girildigi, nereden cikildigi gorunmuyordu.
+      Kisa bir kayma yon duygusunu veriyor - tam ekran genisligi kadar
+      kaydirmak agir durur ve her acilista beklemek gerekirdi.
+    -->
+    <Transition name="chativo-konusma">
+      <ConversationBox
+        v-if="showMessageView"
+        :inbox-id="inboxId"
+        :is-on-expanded-layout="isOnExpandedLayout"
+      >
+        <SidepanelSwitch v-if="currentChat.id" />
+      </ConversationBox>
+    </Transition>
     <ConversationSidebar v-if="shouldShowSidebar" :current-chat="currentChat" />
     <CmdBarConversationSnooze />
   </section>
 </template>
+
+<style scoped>
+/*
+ * Yalnizca telefon ve tablet.
+ *
+ * Masaustunde liste ve konusma yan yana duruyor; orada bir yon yok ve
+ * animasyon sadece beklemek demek olurdu. 1024 piksel, alt cubugun da
+ * kayboldugu esik.
+ *
+ * Mutlak konumlandirma **yalnizca animasyon suresince** uygulaniyor
+ * (`-active` siniflari): bitince bilesen normal akisa donuyor, yani
+ * duzenin kendisi degismiyor.
+ */
+@media (width < 1024px) {
+  .chativo-konusma-enter-active,
+  .chativo-konusma-leave-active {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    transition:
+      transform 220ms cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 180ms ease-out;
+  }
+
+  .chativo-konusma-enter-from,
+  .chativo-konusma-leave-to {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chativo-konusma-enter-active,
+  .chativo-konusma-leave-active {
+    transition: none;
+  }
+
+  .chativo-konusma-enter-from,
+  .chativo-konusma-leave-to {
+    opacity: 1;
+    transform: none;
+  }
+}
+</style>
