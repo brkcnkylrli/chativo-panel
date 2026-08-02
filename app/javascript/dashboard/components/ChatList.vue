@@ -73,7 +73,10 @@ const store = useStore();
 
 const resolveAttributesModalRef = ref(null);
 
-const activeAssigneeTab = ref(wootConstants.ASSIGNEE_TYPE.ME);
+// Varsayilan "Hepsi": Chativo'da isletme cogunlukla tek kisi ve konusmalar
+// kimseye atanmiyor, yani "Bana atananlar" bos bir liste demekti - panel
+// bos bir ekranla aciliyordu.
+const activeAssigneeTab = ref(wootConstants.ASSIGNEE_TYPE.ALL);
 const activeStatus = ref(wootConstants.STATUS_TYPE.OPEN);
 const activeSortBy = ref(wootConstants.SORT_BY_TYPE.LAST_ACTIVITY_AT_DESC);
 const showAdvancedFilters = ref(false);

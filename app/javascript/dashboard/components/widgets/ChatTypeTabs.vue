@@ -9,8 +9,9 @@ const props = defineProps({
     default: () => [],
   },
   activeTab: {
+    // Varsayilan "Hepsi"; gerekcesi ChatList.vue icinde.
     type: String,
-    default: wootConstants.ASSIGNEE_TYPE.ME,
+    default: wootConstants.ASSIGNEE_TYPE.ALL,
   },
 });
 

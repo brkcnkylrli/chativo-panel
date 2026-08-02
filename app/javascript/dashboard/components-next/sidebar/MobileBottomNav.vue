@@ -7,10 +7,11 @@
  * kullanilan bolumleri tek dokunusa indiriyor.
  *
  * Bes oge var ve ikisi gezinme degil **acma** islemi: en soldaki menuyu,
- * en sagdaki profil menusunu aciyor. Ortadaki ise yeni konusma basliyor -
- * onceden mobilde yeni konusma baslatmanin kisa yolu yoktu, menuyu acmak
- * gerekiyordu. Ortada durmasinin sebebi bas parmagin dogal olarak orada
- * olmasi.
+ * en sagdaki profil menusunu aciyor.
+ *
+ * Bir ara ortaya yeni konusma dugmesi konuldu ve geri alindi: cubugu
+ * kalabaliklastiriyor, gezinme cubugunun sakin duruşunu bozuyordu. Yeni
+ * konusma menuden aciliyor.
  *
  * Yalnizca kucuk ekranda gorunuyor; masaustunde sol menu zaten yeterli.
  */
@@ -20,7 +21,6 @@ import { useMapGetter } from 'dashboard/composables/store';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useI18n } from 'vue-i18n';
 import SidebarProfileMenu from './SidebarProfileMenu.vue';
-import ComposeConversation from 'dashboard/components-next/NewConversation/ComposeConversation.vue';
 
 const emit = defineEmits([
   'toggleSidebar',
@@ -131,7 +131,7 @@ const etkinMi = bolum => {
     </button>
 
     <RouterLink
-      v-for="bolum in bolumler.slice(0, 1)"
+      v-for="bolum in bolumler"
       :key="bolum.ad"
       :to="bolum.hedef"
       class="chativo-alt-oge"
@@ -154,63 +154,6 @@ const etkinMi = bolum => {
           <path :d="bolum.cizgi" />
         </svg>
         <span v-if="bolum.nokta" class="chativo-alt-nokta" />
-      </span>
-      <span class="chativo-alt-etiket">{{ bolum.etiket }}</span>
-      <span v-if="etkinMi(bolum)" class="chativo-alt-isaret" />
-    </RouterLink>
-
-    <!--
-      Yeni konusma: cubugun ortasi, bas parmagin dogal yeri.
-      Digerlerinden ayri duruyor cunku bu bir yer degil bir **eylem**;
-      gezinme ogeleriyle ayni bicimde cizilseydi "nereye gidiyorum"
-      sorusunu sordururdu.
-    -->
-    <ComposeConversation align="start">
-      <template #trigger="{ isOpen }">
-        <button
-          type="button"
-          class="chativo-alt-oge chativo-alt-eylem"
-          :class="{ 'chativo-alt-eylem-acik': isOpen }"
-          :aria-label="$t('CHAT_LIST.NEW_CONVERSATION')"
-        >
-          <span class="chativo-alt-yuvarlak">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            >
-              <path d="M12 5v14M5 12h14" />
-            </svg>
-          </span>
-        </button>
-      </template>
-    </ComposeConversation>
-
-    <RouterLink
-      v-for="bolum in bolumler.slice(1)"
-      :key="bolum.ad"
-      :to="bolum.hedef"
-      class="chativo-alt-oge"
-      :class="{ 'chativo-alt-etkin': etkinMi(bolum) }"
-      @click="emit('closeSidebar')"
-    >
-      <span class="chativo-alt-ikon">
-        <svg v-if="etkinMi(bolum)" viewBox="0 0 24 24" fill="currentColor">
-          <path :d="bolum.dolu" />
-        </svg>
-        <svg
-          v-else
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.9"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path :d="bolum.cizgi" />
-        </svg>
         <span
           v-if="bolum.sayac && bolum.sayac.value > 0"
           class="chativo-alt-sayac"
@@ -295,8 +238,7 @@ const etkinMi = bolum => {
  * kuculuyor; birakinca eski boyutuna donuyor. Hover degil `:active`,
  * cunku dokunmatik ekranda hover yapisip kaliyor.
  */
-.chativo-alt-oge:active .chativo-alt-ikon,
-.chativo-alt-oge:active .chativo-alt-yuvarlak {
+.chativo-alt-oge:active .chativo-alt-ikon {
   transform: scale(0.88);
 }
 
@@ -380,41 +322,6 @@ const etkinMi = bolum => {
 }
 
 /*
- * Yeni konusma dugmesi.
- *
- * Gezinme ogeleri gibi cizilmiyor: bu bir yer degil eylem. Etiketi de yok -
- * arti isareti evrensel ve etiket koymak cubugu kalabaliklastiriyordu.
- */
-.chativo-alt-eylem {
-  flex: 0 0 auto;
-  justify-content: center;
-  padding: 0 6px;
-}
-
-.chativo-alt-yuvarlak {
-  display: grid;
-  place-content: center;
-  width: 42px;
-  height: 42px;
-  color: rgb(255 255 255);
-  background: rgb(110 76 255);
-  border-radius: 999px;
-  box-shadow: 0 4px 12px rgb(110 76 255 / 35%);
-  transition:
-    transform 160ms ease-out,
-    filter 160ms ease-out;
-}
-
-.chativo-alt-yuvarlak svg {
-  width: 22px;
-  height: 22px;
-}
-
-.chativo-alt-eylem-acik .chativo-alt-yuvarlak {
-  filter: brightness(1.15);
-}
-
-/*
  * Profil menusu yukari acilmali: bilesen varsayilan olarak asagi aciyor ve
  * cubuk zaten ekranin en altinda - menu ekranin disinda kalirdi.
  */
@@ -437,13 +344,11 @@ const etkinMi = bolum => {
 
 @media (prefers-reduced-motion: reduce) {
   .chativo-alt-ikon,
-  .chativo-alt-yuvarlak,
   .chativo-alt-oge {
     transition: none;
   }
 
-  .chativo-alt-oge:active .chativo-alt-ikon,
-  .chativo-alt-oge:active .chativo-alt-yuvarlak {
+  .chativo-alt-oge:active .chativo-alt-ikon {
     transform: none;
   }
 }

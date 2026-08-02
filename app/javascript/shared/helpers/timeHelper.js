@@ -1,13 +1,49 @@
 import {
-  format,
+  format as dfFormat,
   isSameYear,
   isThisYear,
   isToday,
   isYesterday,
   fromUnixTime,
-  formatDistanceToNow,
+  formatDistanceToNow as dfFormatDistanceToNow,
   differenceInDays,
 } from 'date-fns';
+import { tr } from 'date-fns/locale';
+
+/*
+ * Tarih ve saat Turkce.
+ *
+ * date-fns locale verilmezse Ingilizce yaziyor: "Aug 2", "3:45 PM",
+ * "3 hours ago". Panelin geri kalani Turkceyken zaman damgalarinin
+ * Ingilizce kalmasi, urunun yarim cevrildigi izlenimi veriyordu.
+ *
+ * Locale burada sabit: Chativo tek dilli bir urun (Turkiye'ye satiliyor)
+ * ve panelin dil ayari yalnizca arayuz metinlerini degistiriyor. Cok dilli
+ * hale gelirse burasi kullanicinin diline baglanmali.
+ */
+/**
+ * 12 saatlik bicimi 24 saate cevirir.
+ *
+ * Bicim dizeleri (`'LLL d, h:mm a'` gibi) panelde otuzdan fazla dosyaya
+ * dagilmis durumda ve hepsini tek tek degistirmek hem buyuk hem kirilgan
+ * bir is. Donusum bu yuzden tek noktada: `h:mm a` gelirse `HH:mm` olarak
+ * bicimleniyor.
+ *
+ * Turkiye'de 24 saat standart; "3:45 ÖS" dogru cevrilmis ama kimsenin
+ * boyle okumadigi bir sey.
+ */
+function saatiYirmiDorde(bicim) {
+  if (typeof bicim !== 'string') return bicim;
+  return bicim.replace(/\bh+:mm(:ss)?\s*a\b/g, (_, saniye) =>
+    saniye ? 'HH:mm:ss' : 'HH:mm'
+  );
+}
+
+const format = (tarih, bicim) =>
+  dfFormat(tarih, saatiYirmiDorde(bicim), { locale: tr });
+
+const formatDistanceToNow = (tarih, secenekler) =>
+  dfFormatDistanceToNow(tarih, { ...secenekler, locale: tr });
 
 /**
  * Formats a Unix timestamp into a human-readable time format.

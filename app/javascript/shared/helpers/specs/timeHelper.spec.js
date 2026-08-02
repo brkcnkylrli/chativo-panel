@@ -20,21 +20,27 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
+/*
+ * Beklentiler Turkce ve 24 saatlik.
+ *
+ * date-fns locale verilmezse Ingilizce yaziyordu ("Aug 2", "3:45 PM") ve
+ * panelin geri kalani Turkceyken bu, urunun yarim cevrildigi izlenimi
+ * veriyordu. Saat bicimi de 12'den 24'e cevrildi: "3:45 ÖS" dogru cevrilmis
+ * ama Turkiye'de kimsenin boyle okumadigi bir sey.
+ */
 describe('#messageStamp', () => {
   it('returns correct value', () => {
-    expect(messageStamp(1612971343)).toEqual('3:35 PM');
-    expect(messageStamp(1612971343, 'LLL d, h:mm a')).toEqual(
-      'Feb 10, 3:35 PM'
-    );
+    expect(messageStamp(1612971343)).toEqual('15:35');
+    expect(messageStamp(1612971343, 'LLL d, h:mm a')).toEqual('Şub 10, 15:35');
   });
 });
 
 describe('#messageTimestamp', () => {
   it('should return the message date in the specified format if the message was sent in the current year', () => {
-    expect(messageTimestamp(1680777464)).toEqual('Apr 6, 2023');
+    expect(messageTimestamp(1680777464)).toEqual('Nis 6, 2023');
   });
   it('should return the message date and time in a different format if the message was sent in a different year', () => {
-    expect(messageTimestamp(1612971343)).toEqual('Feb 10 2021, 3:35 PM');
+    expect(messageTimestamp(1612971343)).toEqual('Şub 10 2021, 15:35');
   });
 });
 
@@ -44,7 +50,7 @@ describe('#relativeDayTimestamp', () => {
 
   it('returns the time for timestamps from today', () => {
     const today = toUnix(Date.UTC(2023, 4, 5, 15, 35, 0));
-    expect(relativeDayTimestamp(today, 'Yesterday')).toEqual('3:35 PM');
+    expect(relativeDayTimestamp(today, 'Yesterday')).toEqual('15:35');
   });
 
   it('returns the supplied label for timestamps from yesterday', () => {
@@ -55,27 +61,27 @@ describe('#relativeDayTimestamp', () => {
   it('returns a day and month for older timestamps in the current year', () => {
     const earlierThisYear = toUnix(Date.UTC(2023, 1, 10, 12, 0, 0));
     expect(relativeDayTimestamp(earlierThisYear, 'Yesterday')).toEqual(
-      'Feb 10'
+      'Şub 10'
     );
   });
 
   it('returns a full date for timestamps from a previous year', () => {
     const lastYear = toUnix(Date.UTC(2021, 1, 10, 12, 0, 0));
-    expect(relativeDayTimestamp(lastYear, 'Yesterday')).toEqual('Feb 10, 2021');
+    expect(relativeDayTimestamp(lastYear, 'Yesterday')).toEqual('Şub 10, 2021');
   });
 });
 
 describe('#dynamicTime', () => {
   it('returns correct value', () => {
     Date.now = vi.fn(() => new Date(Date.UTC(2023, 1, 14)).valueOf());
-    expect(dynamicTime(1612971343)).toEqual('about 2 years ago');
+    expect(dynamicTime(1612971343)).toEqual('yaklaşık 2 yıl önce');
   });
 });
 
 describe('#dateFormat', () => {
   it('returns correct value', () => {
-    expect(dateFormat(1612971343)).toEqual('Feb 10, 2021');
-    expect(dateFormat(1612971343, 'LLL d, yyyy')).toEqual('Feb 10, 2021');
+    expect(dateFormat(1612971343)).toEqual('Şub 10, 2021');
+    expect(dateFormat(1612971343, 'LLL d, yyyy')).toEqual('Şub 10, 2021');
   });
 });
 
