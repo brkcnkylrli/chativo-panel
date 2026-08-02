@@ -1,8 +1,8 @@
 {
   "CONVERSATION": {
+    "404": "Maalesef konuşmayı bulamıyoruz. Lütfen tekrar deneyin",
     "SELECT_A_CONVERSATION": "Lütfen sol bölmeden bir konuşma seçin",
     "CSAT_REPLY_MESSAGE": "Lütfen görüşmeyi değerlendirin",
-    "404": "Maalesef konuşmayı bulamıyoruz. Lütfen tekrar deneyin",
     "SWITCH_VIEW_LAYOUT": "Düzeni değiştir",
     "DASHBOARD_APP_TAB_MESSAGES": "Mesajlar",
     "UNVERIFIED_SESSION": "Bu kullanıcının kimliği doğrulanmadı",
@@ -123,7 +123,7 @@
         "NRT": "Sonraki yanıt {status}",
         "RT": "Çözüm {status}",
         "MISSED": "kaçırıldı",
-        "DUE": "due"
+        "DUE": "kalan"
       }
     },
     "RESOLVE_DROPDOWN": {
@@ -285,7 +285,7 @@
     "FILE_TYPE_NOT_SUPPORTED": "{fileName} dosya türü bu konuşmada desteklenmiyor",
     "MESSAGE_ERROR": "Bu mesaj gönderilemiyor, lütfen daha sonra tekrar deneyin",
     "SENT_BY": "Tarafından gönderildi:",
-    "BOT": "Bot",
+    "BOT": "Asistan",
     "DATE_SEPARATOR": {
       "TODAY": "Bugün",
       "YESTERDAY": "Dün"
