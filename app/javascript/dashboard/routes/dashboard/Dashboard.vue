@@ -71,6 +71,17 @@ export default {
     isSmallScreen() {
       return this.windowWidth < wootConstants.SMALL_SCREEN_BREAKPOINT;
     },
+    /**
+     * Alt cubuk su an ekranda mi.
+     *
+     * Cubuk konusma acikken gizleniyor (orada altta mesaj yazma kutusu
+     * var). Icerik alanindaki alt bosluk da ayni kosula bagli olmali,
+     * yoksa konusma ekraninin altinda hicbir sey olmayan 84 piksellik bir
+     * bosluk kaliyor. `MobileBottomNav` ile ayni kosul.
+     */
+    altCubukGorunuyor() {
+      return !this.$route.params.conversation_id;
+    },
     showUpgradePage() {
       return this.upgradePageRef?.shouldShowUpgradePage;
     },
@@ -144,8 +155,16 @@ export default {
       @close-mobile-sidebar="closeMobileSidebar"
     />
 
+    <!--
+      Alt bosluk mobil cubugun yeri.
+      Cubuk `position: fixed` ve icerik alani onun yuksekligini hesaba
+      katmiyordu: sayfanin son satirlari cubugun arkasinda kaliyordu -
+      raporlarda isi haritasinin alt gunleri, uzun listelerde son kayit.
+      1024 pikselden itibaren cubuk gizlendigi icin bosluk da kalkiyor.
+    -->
     <main
       class="flex flex-1 h-full w-full min-h-0 px-0 overflow-hidden bg-n-surface-1"
+      :class="altCubukGorunuyor ? 'pb-[84px] lg:pb-0' : ''"
     >
       <UpgradePage
         v-show="showUpgradePage"
