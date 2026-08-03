@@ -19,8 +19,17 @@ import Auth from 'dashboard/api/auth';
 import { useAlert } from 'dashboard/composables';
 import Icon from 'next/icon/Icon.vue';
 
-defineProps({
+/*
+ * Bilesen iki menu ogesini de karsiliyor: "Asistanim" panelin basina,
+ * "Aboneligim" paket bolumune gidiyor. Ikisi ayni dogrulama akisini
+ * kullaniyor; ayri bilesen yazmak o akisi iki yerde tutmak olurdu.
+ */
+const props = defineProps({
   isCollapsed: { type: Boolean, default: false },
+  /** Koprunun capaya cevirdigi bolum adi. Bos ise panelin basi. */
+  bolum: { type: String, default: '' },
+  etiket: { type: String, default: 'SIDEBAR.ASISTANIM' },
+  ikon: { type: String, default: 'i-lucide-bot' },
 });
 
 const { t } = useI18n();
@@ -50,7 +59,7 @@ const ac = async () => {
     const cevap = await fetch(`${kopruAdresi}/musteri/panel-baglantisi`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ oturum: kimlik }),
+      body: JSON.stringify({ oturum: kimlik, bolum: props.bolum }),
     });
 
     if (!cevap.ok) throw new Error(`kopru ${cevap.status}`);
@@ -75,12 +84,10 @@ const ac = async () => {
     class="flex items-center w-full gap-2 px-2 py-1.5 rounded-lg text-sm text-n-slate-11 hover:bg-n-alpha-1 hover:text-n-slate-12 disabled:opacity-60"
     :class="isCollapsed ? 'justify-center' : ''"
     :disabled="yukleniyor"
-    :title="isCollapsed ? t('SIDEBAR.ASISTANIM') : undefined"
+    :title="isCollapsed ? t(etiket) : undefined"
     @click="ac"
   >
-    <Icon icon="i-lucide-bot" class="flex-shrink-0 size-4" />
-    <span v-if="!isCollapsed" class="truncate">{{
-      t('SIDEBAR.ASISTANIM')
-    }}</span>
+    <Icon :icon="ikon" class="flex-shrink-0 size-4" />
+    <span v-if="!isCollapsed" class="truncate">{{ t(etiket) }}</span>
   </button>
 </template>
