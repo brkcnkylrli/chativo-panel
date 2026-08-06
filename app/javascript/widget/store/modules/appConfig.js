@@ -12,6 +12,7 @@ import {
   hazirSorulariAyikla,
 } from 'widget/helpers/hazirSorular';
 import { gomuluModAcik } from 'widget/helpers/gomuluMod';
+import { asistanModuAcik } from 'widget/helpers/asistanModu';
 
 const state = {
   hideMessageBubble: false,
@@ -39,6 +40,9 @@ const state = {
   // dogrudan iframe'e alan sayfalarda (demo.chativo.tr) `config-set` mesaji
   // hic gelmiyor, tek kaynak adres oluyor.
   hazirSorular: adrestenHazirSorular(),
+  // Asistan modu: baslikta her zaman "Cevrimici" yazar, yanit suresi metni
+  // gosterilmez. Baslangic degeri yine adres satirindan.
+  asistanModu: asistanModuAcik(),
 };
 
 export const getters = {
@@ -60,6 +64,7 @@ export const getters = {
   getShouldShowEmojiPicker: $state => $state.enableEmojiPicker,
   getCanUserEndConversation: $state => $state.enableEndConversation,
   getHazirSorular: $state => $state.hazirSorular,
+  getAsistanModu: $state => $state.asistanModu,
 };
 
 export const actions = {
@@ -80,10 +85,12 @@ export const actions = {
       enableEmojiPicker = true,
       enableEndConversation = true,
       hazirSorular = [],
+      asistanModu = false,
     }
   ) {
     commit(SET_WIDGET_APP_CONFIG, {
       hazirSorular: hazirSorulariAyikla(hazirSorular),
+      asistanModu,
       hideMessageBubble: !!hideMessageBubble,
       position: position || 'right',
       showPopoutButton: !!showPopoutButton,
@@ -143,6 +150,10 @@ export const mutations = {
     // ama sayfa adresinde soru duruyor olabilir, o zaman adres kazanir.
     if (data.hazirSorular?.length) {
       $state.hazirSorular = data.hazirSorular;
+    }
+    // Ayni gerekce: SDK false gonderdi diye adresten gelen isaret silinmesin.
+    if (data.asistanModu) {
+      $state.asistanModu = true;
     }
   },
   [TOGGLE_WIDGET_OPEN]($state, isWidgetOpen) {

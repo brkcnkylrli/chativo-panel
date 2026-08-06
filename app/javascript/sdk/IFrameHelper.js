@@ -174,6 +174,7 @@ export const IFrameHelper = {
         enableEmojiPicker: window.$chatwoot.enableEmojiPicker,
         enableEndConversation: window.$chatwoot.enableEndConversation,
         hazirSorular: window.$chatwoot.hazirSorular,
+        asistanModu: window.$chatwoot.asistanModu,
       });
       IFrameHelper.onLoad({
         widgetColor: message.config.channelConfig.widgetColor,

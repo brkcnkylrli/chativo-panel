@@ -1,10 +1,11 @@
 <script setup>
-import { toRef } from 'vue';
+import { computed, toRef } from 'vue';
 import { useRouter } from 'vue-router';
 import FluentIcon from 'shared/components/FluentIcon/Index.vue';
 import HeaderActions from './HeaderActions.vue';
 import AvailabilityContainer from 'widget/components/Availability/AvailabilityContainer.vue';
 import { useAvailability } from 'widget/composables/useAvailability';
+import { useMapGetter } from 'dashboard/composables/store.js';
 
 const props = defineProps({
   avatarUrl: { type: String, default: '' },
@@ -17,7 +18,20 @@ const props = defineProps({
 const availableAgents = toRef(props, 'availableAgents');
 
 const router = useRouter();
-const { isOnline } = useAvailability(availableAgents);
+const { isOnline: temsilciCevrimici } = useAvailability(availableAgents);
+
+/**
+ * Chativo: asistan modunda baslik her zaman cevrimici.
+ *
+ * Chatwoot cevrimici durumunu "musait insan temsilci var mi" diye
+ * hesapliyor. Asistanli bir gelen kutusunda insan cogu zaman cevrimdisi ve
+ * widget "operatorlerimiz musait degil" diyordu; oysa asistan saniyeler
+ * icinde cevap veriyor. Ayrica "genellikle birkac dakika icinde yanit
+ * verir" cumlesi de urunu oldugundan yavas gosteriyordu, asistan modunda
+ * yerini tek kelimeye birakiyor: Cevrimici.
+ */
+const asistanModu = useMapGetter('appConfig/getAsistanModu');
+const isOnline = computed(() => asistanModu.value || temsilciCevrimici.value);
 
 const onBackButtonClick = () => {
   router.replace({ name: 'home' });
@@ -50,7 +64,11 @@ const onBackButtonClick = () => {
               ${isOnline ? 'bg-n-teal-10' : 'hidden'}`"
           />
         </div>
+        <span v-if="asistanModu" class="text-xs leading-3 text-n-slate-11">
+          {{ $t('TEAM_AVAILABILITY.ONLINE') }}
+        </span>
         <AvailabilityContainer
+          v-else
           :agents="availableAgents"
           :show-header="false"
           :show-avatars="false"

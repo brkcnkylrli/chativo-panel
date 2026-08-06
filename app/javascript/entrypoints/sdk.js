@@ -85,6 +85,8 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     // Chativo eki: acilis ekranindaki tiklanabilir sorular. Metin firmadan
     // firmaya degistigi icin urune gomulu degil, sayfadan geliyor.
     hazirSorular: chatwootSettings.hazirSorular || [],
+    // Asistan modu: baslikta her zaman "Cevrimici", yanit suresi metni yok.
+    asistanModu: chatwootSettings.asistanModu || false,
 
     toggle(state) {
       IFrameHelper.events.toggleBubble(state);
