@@ -7,6 +7,10 @@ import {
   TOGGLE_WIDGET_OPEN,
   SET_ROUTE_UPDATE_STATE,
 } from '../types';
+import {
+  adrestenHazirSorular,
+  hazirSorulariAyikla,
+} from 'widget/helpers/hazirSorular';
 
 const state = {
   hideMessageBubble: false,
@@ -28,6 +32,10 @@ const state = {
   enableFileUpload: undefined,
   enableEmojiPicker: true,
   enableEndConversation: true,
+  // Chativo eki. Baslangic degeri adres satirindan geliyor: widget'i SDK'siz,
+  // dogrudan iframe'e alan sayfalarda (demo.chativo.tr) `config-set` mesaji
+  // hic gelmiyor, tek kaynak adres oluyor.
+  hazirSorular: adrestenHazirSorular(),
 };
 
 export const getters = {
@@ -48,6 +56,7 @@ export const getters = {
   getShouldShowFilePicker: $state => $state.enableFileUpload,
   getShouldShowEmojiPicker: $state => $state.enableEmojiPicker,
   getCanUserEndConversation: $state => $state.enableEndConversation,
+  getHazirSorular: $state => $state.hazirSorular,
 };
 
 export const actions = {
@@ -67,9 +76,11 @@ export const actions = {
       enableFileUpload = undefined,
       enableEmojiPicker = true,
       enableEndConversation = true,
+      hazirSorular = [],
     }
   ) {
     commit(SET_WIDGET_APP_CONFIG, {
+      hazirSorular: hazirSorulariAyikla(hazirSorular),
       hideMessageBubble: !!hideMessageBubble,
       position: position || 'right',
       showPopoutButton: !!showPopoutButton,
@@ -125,6 +136,11 @@ export const mutations = {
     $state.enableFileUpload = data.enableFileUpload;
     $state.enableEmojiPicker = data.enableEmojiPicker;
     $state.enableEndConversation = data.enableEndConversation;
+    // Bos gelen liste adresten okunani ezmiyor: SDK ayar gondermemis olabilir
+    // ama sayfa adresinde soru duruyor olabilir, o zaman adres kazanir.
+    if (data.hazirSorular?.length) {
+      $state.hazirSorular = data.hazirSorular;
+    }
   },
   [TOGGLE_WIDGET_OPEN]($state, isWidgetOpen) {
     $state.isWidgetOpen = isWidgetOpen;

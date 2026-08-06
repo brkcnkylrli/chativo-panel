@@ -82,6 +82,9 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     enableFileUpload: chatwootSettings.enableFileUpload,
     enableEmojiPicker: chatwootSettings.enableEmojiPicker ?? true,
     enableEndConversation: chatwootSettings.enableEndConversation ?? true,
+    // Chativo eki: acilis ekranindaki tiklanabilir sorular. Metin firmadan
+    // firmaya degistigi icin urune gomulu degil, sayfadan geliyor.
+    hazirSorular: chatwootSettings.hazirSorular || [],
 
     toggle(state) {
       IFrameHelper.events.toggleBubble(state);

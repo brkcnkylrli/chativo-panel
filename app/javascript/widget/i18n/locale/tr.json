@@ -42,6 +42,9 @@
     "FRIDAY": "Cuma",
     "SATURDAY": "Cumartesi"
   },
+  "HAZIR_SORULAR": {
+    "BASLIK": "Sık sorulanlar"
+  },
   "START_CONVERSATION": "Görüşmeyi Başlatın",
   "END_CONVERSATION": "Görüşmeyi Sonlandır",
   "CONTINUE_CONVERSATION": "Görüşmeye devam et",

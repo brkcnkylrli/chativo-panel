@@ -173,6 +173,7 @@ export const IFrameHelper = {
         enableFileUpload: window.$chatwoot.enableFileUpload,
         enableEmojiPicker: window.$chatwoot.enableEmojiPicker,
         enableEndConversation: window.$chatwoot.enableEndConversation,
+        hazirSorular: window.$chatwoot.hazirSorular,
       });
       IFrameHelper.onLoad({
         widgetColor: message.config.channelConfig.widgetColor,

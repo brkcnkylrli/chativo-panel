@@ -42,6 +42,9 @@
     "FRIDAY": "Friday",
     "SATURDAY": "Saturday"
   },
+  "HAZIR_SORULAR": {
+    "BASLIK": "Frequently asked"
+  },
   "START_CONVERSATION": "Start Conversation",
   "END_CONVERSATION": "End Conversation",
   "CONTINUE_CONVERSATION": "Continue conversation",
