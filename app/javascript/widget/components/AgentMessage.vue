@@ -67,7 +67,25 @@ export default {
       const { content_type: type = '' } = this.message;
       return type;
     },
+    /**
+     * Chativo: "gelen kutusu avatarini kullan" acikken gonderen ADI da gelen
+     * kutusunun adi oluyor, gonderen kaydina hic bakilmadan.
+     *
+     * Upstream'de bu ozellik yalnizca gondereni olmayan (gercek bot)
+     * mesajlarda devreye giriyordu. Bizim AI cevaplarimiz koprunun servis
+     * kullanicisiyla yaziliyor, yani gonderen var: musteri kendi hizmet
+     * aldigi firmanin degil, o servis kullanicisinin adini ("Chativo")
+     * goruyordu. Bir transfer firmasinin demosunda balonun altinda baska bir
+     * marka adi yazmasi kabul edilemez.
+     *
+     * Ozellik gelen kutusu bazinda ve istege bagli: acan, o kutudaki tum
+     * giden mesajlarin firma adiyla gorunmesini bilerek seciyor.
+     */
     agentName() {
+      if (this.useInboxAvatarForBot) {
+        return this.channelConfig.websiteName;
+      }
+
       if (this.message.sender) {
         return this.message.sender.available_name || this.message.sender.name;
       }
@@ -76,16 +94,18 @@ export default {
         return this.message.additional_attributes.sender_name;
       }
 
-      if (this.useInboxAvatarForBot) {
-        return this.channelConfig.websiteName;
-      }
-
       return this.$t('UNREAD_VIEW.BOT');
     },
     avatarUrl() {
       const displayImage = this.useInboxAvatarForBot
         ? this.inboxAvatarUrl
         : '/assets/images/chatwoot_bot.png';
+
+      // Ad ile ayni gerekce: ozellik acikken gonderenin kendi resmi degil,
+      // gelen kutusunun resmi gosteriliyor.
+      if (this.useInboxAvatarForBot) {
+        return displayImage;
+      }
 
       if (this.message.message_type === MESSAGE_TYPE.TEMPLATE) {
         return displayImage;

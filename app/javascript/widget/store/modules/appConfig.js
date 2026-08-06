@@ -11,11 +11,14 @@ import {
   adrestenHazirSorular,
   hazirSorulariAyikla,
 } from 'widget/helpers/hazirSorular';
+import { gomuluModAcik } from 'widget/helpers/gomuluMod';
 
 const state = {
   hideMessageBubble: false,
   isCampaignViewClicked: false,
-  showUnreadMessagesDialog: true,
+  // Gomulu modda okunmamis mesaj ekrani kapali: widget zaten surekli acik
+  // duruyor, o ekran her cevapta sohbetin ustunu ortuyordu.
+  showUnreadMessagesDialog: !gomuluModAcik(),
   isWebWidgetTriggered: false,
   isWidgetOpen: false,
   position: 'right',
