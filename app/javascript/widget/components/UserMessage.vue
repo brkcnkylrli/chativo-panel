@@ -6,6 +6,7 @@ import VideoBubble from 'widget/components/VideoBubble.vue';
 import FluentIcon from 'shared/components/FluentIcon/Index.vue';
 import FileBubble from 'widget/components/FileBubble.vue';
 import { messageStamp } from 'shared/helpers/timeHelper';
+import { MESSAGE_TYPE } from 'widget/helpers/constants';
 import messageMixin from '../mixins/messageMixin';
 import ReplyToChip from 'widget/components/ReplyToChip.vue';
 import DragWrapper from 'widget/components/DragWrapper.vue';
@@ -47,6 +48,7 @@ export default {
       widgetColor: 'appConfig/getWidgetColor',
       asistanYaziyor: 'conversation/getIsAgentTyping',
       sonZiyaretciMesajId: 'conversation/getSonZiyaretciMesajId',
+      sonMesaj: 'conversation/getLastMessage',
     }),
 
     isInProgress() {
@@ -64,7 +66,11 @@ export default {
      * Durumlar sahte zamanlayiciyla degil **gercek olaylardan** turuyor:
      *   - `in_progress`  : istek daha sunucuya ulasmadi -> "Gonderiliyor"
      *   - durum gecti    : Chatwoot mesaji kaydetti     -> "Iletildi"
-     *   - asistan yaziyor: mesaj okundu ve cevap uretiliyor -> "Okundu"
+     *   - asistan yaziyor ya da cevap geldi             -> "Okundu"
+     *
+     * "Cevap geldi" kosulu sonradan eklendi: yalnizca yaziyor sinyaline
+     * bakinca gosterge cevapla birlikte "Iletildi"ye geri donuyordu -
+     * asistan cevap yazmisken mesajin okunmadigini soylemek sacma.
      *
      * Yalnizca en son ziyaretci mesajinin altinda cikiyor; her balonun
      * altina koymak sohbeti tik kalabaligina cevirir.
@@ -78,7 +84,10 @@ export default {
       return this.$t('GONDERIM.ILETILDI');
     },
     okunduMu() {
-      return !this.isInProgress && this.asistanYaziyor;
+      if (this.isInProgress) return false;
+      if (this.asistanYaziyor) return true;
+      // Asistan cevabi geldiyse mesaj kesin okunmustur.
+      return this.sonMesaj?.message_type === MESSAGE_TYPE.OUTGOING;
     },
     showTextBubble() {
       const { message } = this;
