@@ -45,6 +45,11 @@
   "HAZIR_SORULAR": {
     "BASLIK": "Sık sorulanlar"
   },
+  "GONDERIM": {
+    "GONDERILIYOR": "Gönderiliyor",
+    "ILETILDI": "İletildi",
+    "OKUNDU": "Okundu"
+  },
   "START_CONVERSATION": "Görüşmeyi Başlatın",
   "END_CONVERSATION": "Görüşmeyi Sonlandır",
   "CONTINUE_CONVERSATION": "Görüşmeye devam et",

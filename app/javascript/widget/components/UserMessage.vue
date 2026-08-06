@@ -45,11 +45,40 @@ export default {
   computed: {
     ...mapGetters({
       widgetColor: 'appConfig/getWidgetColor',
+      asistanYaziyor: 'conversation/getIsAgentTyping',
+      sonZiyaretciMesajId: 'conversation/getSonZiyaretciMesajId',
     }),
 
     isInProgress() {
       const { status = '' } = this.message;
       return status === 'in_progress';
+    },
+
+    /**
+     * Chativo: gonderim durumu (gonderiliyor / iletildi / okundu).
+     *
+     * Ziyaretci mesaji yazip cevabi beklerken tek merak ettigi sey mesajin
+     * gidip gitmedigi. Gosterge olmadan sessizlik "sistem bozuk mu" diye
+     * okunuyordu.
+     *
+     * Durumlar sahte zamanlayiciyla degil **gercek olaylardan** turuyor:
+     *   - `in_progress`  : istek daha sunucuya ulasmadi -> "Gonderiliyor"
+     *   - durum gecti    : Chatwoot mesaji kaydetti     -> "Iletildi"
+     *   - asistan yaziyor: mesaj okundu ve cevap uretiliyor -> "Okundu"
+     *
+     * Yalnizca en son ziyaretci mesajinin altinda cikiyor; her balonun
+     * altina koymak sohbeti tik kalabaligina cevirir.
+     */
+    gonderimDurumu() {
+      if (this.isFailed) return null;
+      if (this.message.id !== this.sonZiyaretciMesajId) return null;
+
+      if (this.isInProgress) return this.$t('GONDERIM.GONDERILIYOR');
+      if (this.asistanYaziyor) return this.$t('GONDERIM.OKUNDU');
+      return this.$t('GONDERIM.ILETILDI');
+    },
+    okunduMu() {
+      return !this.isInProgress && this.asistanYaziyor;
     },
     showTextBubble() {
       const { message } = this;
@@ -161,6 +190,37 @@ export default {
               </div>
             </div>
           </DragWrapper>
+        </div>
+        <div
+          v-if="gonderimDurumu"
+          class="flex items-center justify-end gap-1 px-1 pt-1 text-[11px] text-n-slate-10"
+        >
+          <span>{{ gonderimDurumu }}</span>
+          <svg
+            v-if="!isInProgress"
+            width="15"
+            height="10"
+            viewBox="0 0 18 11"
+            fill="none"
+            aria-hidden="true"
+            :class="okunduMu ? 'text-n-teal-10' : 'text-n-slate-10'"
+          >
+            <path
+              d="M1 5.8L4.2 9 10.6 1.6"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              v-if="okunduMu"
+              d="M7.4 5.8L10.6 9 17 1.6"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </div>
         <div
           v-if="isFailed"

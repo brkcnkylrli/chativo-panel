@@ -33,6 +33,22 @@ export const getters = {
       messages: groupConversationBySender(conversationGroupedByDate[date]),
     }));
   },
+  /**
+   * Chativo: ziyaretcinin gonderdigi SON mesajin kimligi.
+   *
+   * "Iletildi / okundu" gostergesi yalnizca bu mesajin altinda cikiyor.
+   * Her balonun altina koymak sohbeti tik kalabaligina cevirir; bilgi
+   * zaten yalnizca en son mesaj icin merak ediliyor.
+   */
+  getSonZiyaretciMesajId: _state => {
+    const mesajlar = Object.values(_state.conversations);
+    for (let i = mesajlar.length - 1; i >= 0; i -= 1) {
+      if (mesajlar[i].message_type === MESSAGE_TYPE.INCOMING) {
+        return mesajlar[i].id;
+      }
+    }
+    return null;
+  },
   getPendingCustomAttributes: _state => _state.pendingCustomAttributes,
   getPendingLabels: _state => _state.pendingLabels,
   getIsFetchingList: _state => _state.uiFlags.isFetchingList,

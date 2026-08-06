@@ -45,6 +45,11 @@
   "HAZIR_SORULAR": {
     "BASLIK": "Frequently asked"
   },
+  "GONDERIM": {
+    "GONDERILIYOR": "Sending",
+    "ILETILDI": "Delivered",
+    "OKUNDU": "Read"
+  },
   "START_CONVERSATION": "Start Conversation",
   "END_CONVERSATION": "End Conversation",
   "CONTINUE_CONVERSATION": "Continue conversation",
