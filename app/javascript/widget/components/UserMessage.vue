@@ -80,8 +80,11 @@ export default {
       if (this.message.id !== this.sonZiyaretciMesajId) return null;
 
       if (this.isInProgress) return this.$t('GONDERIM.GONDERILIYOR');
-      if (this.asistanYaziyor) return this.$t('GONDERIM.OKUNDU');
-      return this.$t('GONDERIM.ILETILDI');
+      // Yazi ve tik ayni kaynaktan: ikisi ayri kosula bakinca cift tik
+      // cikip yaninda "Iletildi" yaziyordu.
+      return this.okunduMu
+        ? this.$t('GONDERIM.OKUNDU')
+        : this.$t('GONDERIM.ILETILDI');
     },
     okunduMu() {
       if (this.isInProgress) return false;
